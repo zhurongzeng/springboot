@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("readinglist")
+@RequestMapping("/readinglist")
 public class ReadingListController {
 	@Autowired
 	private ReadingListDAO readingListDAO;
