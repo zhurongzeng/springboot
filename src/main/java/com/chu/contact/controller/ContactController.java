@@ -25,13 +25,13 @@ public class ContactController {
 		log.info("********** 查询列表······ **********");
 		List<Contact> contacts = contactDAO.findAll();
 		model.put("contacts", contacts);
-		return "home";
+		return "contact/home";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String submit(Contact contact) {
 		log.info("********** 保存数据······ **********");
 		contactDAO.save(contact);
-		return "redirect:/";
+		return "redirect:/contact";
 	}
 }
