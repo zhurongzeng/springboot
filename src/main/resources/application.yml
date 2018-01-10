@@ -1,7 +1,14 @@
-
-
-spring: 
-  main: 
+spring:
+  main:
     show-banner: false
-  thymeleaf: 
+  thymeleaf:
     cache: false
+
+logging:
+  path: ${LOG_PATH:logs}
+  pattern:
+    console: '%date{HH:mm:ss.SSS} %highlight(%-5p) [%thread] %C{0}.%M:%L %msg%xEx%n'
+    file: '%date{HH:mm:ss.SSS} %-5p [%thread] %C{0}.%M:%L %msg%xEx%n'
+  level:
+    org.hibernate.SQL: DEBUG
+    com.dashuf.dsres: DEBUG
