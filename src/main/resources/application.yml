@@ -1,0 +1,7 @@
+
+
+spring: 
+  main: 
+    show-banner: false
+  thymeleaf: 
+    cache: false

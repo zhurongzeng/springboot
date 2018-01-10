@@ -13,12 +13,12 @@ import com.chu.readinglist.dao.ReadingListDAO;
 import com.chu.readinglist.po.Book;
 
 @Controller
-@RequestMapping("/readinglist")
+@RequestMapping("/")
 public class ReadingListController {
 	@Autowired
 	private ReadingListDAO readingListDAO;
 
-	@RequestMapping(value = "/{reader}", method = RequestMethod.GET)
+	@RequestMapping(value = "/readinglist/{reader}", method = RequestMethod.GET)
 	public String readerBooks(@PathVariable("reader") String reader, Model model) {
 		List<Book> readingList = readingListDAO.findByReader(reader);
 		if (readingList != null) {
@@ -27,10 +27,15 @@ public class ReadingListController {
 		return "readinglist/list";
 	}
 
-	@RequestMapping(value = "/{reader}", method = RequestMethod.POST)
+	@RequestMapping(value = "/readinglist/{reader}", method = RequestMethod.POST)
 	public String addToReadingList(@PathVariable("reader") String reader, Book book) {
 		book.setReader(reader);
 		readingListDAO.save(book);
 		return "redirect:/readinglist/{reader}";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login() {
+		return "login";
 	}
 }

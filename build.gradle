@@ -11,8 +11,8 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 
 jar {
-	baseName = 'contacts'
-	version = '0.1.0'
+	baseName = 'spring-boot'
+	version = '1.0.0'
 }
 
 repositories {
