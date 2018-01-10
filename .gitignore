@@ -10,3 +10,4 @@ gen
 /.idea/
 /logs/
 /gradle/
+/bin/
