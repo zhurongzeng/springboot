@@ -16,7 +16,7 @@ public class ContactDAO {
 	private JdbcTemplate jdbc;
 
 	public List<Contact> findAll() {
-		return jdbc.query("select id, firstName, lastName, phoneNumber, emailAddress from contacts order by lastName",
+		return jdbc.query("select id, firstName, lastName, phoneNumber, emailAddress from contact order by lastName",
 				new RowMapper<Contact>() {
 					public Contact mapRow(ResultSet rs, int rowNum) throws SQLException {
 						Contact contact = new Contact();
@@ -31,7 +31,7 @@ public class ContactDAO {
 	}
 
 	public void save(Contact contact) {
-		jdbc.update("insert into contacts (firstName, lastName, phoneNumber, emailAddress) values (?, ?, ?, ?)",
+		jdbc.update("insert into contact (id, firstName, lastName, phoneNumber, emailAddress) values (?, ?, ?, ?, ?)", System.currentTimeMillis(),
 				contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber(), contact.getEmailAddress());
 	}
 }

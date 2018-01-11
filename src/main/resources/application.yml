@@ -1,12 +1,26 @@
+server:
+  port: 8080
+#  port: 8080
+#  ssl:
+#    key-store: file:///path/to/mykeys.jks
+#    key-store-password: chu
+#    key-password: chu
+
 spring:
   thymeleaf:
     cache: false
+  datasource:
+    url: jdbc:mysql://d0cbli.mysql.dbdev.dsfdc.com:5011/chu?useUnicode=yes&characterEncoding=UTF8&useSSL=false
+    username: deployop
+    password: DDeployop88#
 
 logging:
-  path: ${LOG_PATH:logs}
+  path: E:/IdeaProjects/logs/springboot
   pattern:
     console: '%date{HH:mm:ss.SSS} %highlight(%-5p) [%t] %C{0}.%M:%L %msg%xEx%n'
     file: '%date{HH:mm:ss.SSS} %-5p [%t] %C{0}.%M:%L %msg%xEx%n'
   level:
     org.hibernate.SQL: DEBUG
-    com.dashuf.dsres: DEBUG
+    org.springframework.security: DEBUG
+    com.chu: DEBUG
+
