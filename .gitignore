@@ -10,5 +10,5 @@ gen
 /logs/
 /gradle/
 /bin/
-/.gradle/
 /build/
+/.gradle/3.0/taskArtifacts/
