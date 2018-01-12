@@ -11,5 +11,3 @@ create table reader (
 	password varchar(30) not null,
 	fullname varchar(50) not null
 );
-
-insert into Reader (username, password, fullname) values ('chu', 'chu', 'Craig Walls');
