@@ -1,18 +1,15 @@
-server:
-  port: 8080
-#  port: 8080
-#  ssl:
-#    key-store: file:///path/to/mykeys.jks
-#    key-store-password: chu
-#    key-password: chu
+server.port: 8080
 
 spring:
+  profiles:
+    active: dev
   thymeleaf:
     cache: false
   datasource:
     url: jdbc:mysql://d0cbli.mysql.dbdev.dsfdc.com:5011/chu?useUnicode=yes&characterEncoding=UTF8&useSSL=false
     username: deployop
     password: DDeployop88#
+    driver-class-name: com.mysql.jdbc.Driver
 
 logging:
   path: E:/IdeaProjects/logs/springboot
@@ -23,3 +20,13 @@ logging:
     org.hibernate.SQL: DEBUG
     com.chu: DEBUG
 
+---
+spring:
+  profiles: dev
+
+amazon.associateId: dev
+---
+spring:
+  profiles: prd
+
+amazon.associateId: prd

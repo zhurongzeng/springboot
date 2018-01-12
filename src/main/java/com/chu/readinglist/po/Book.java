@@ -11,7 +11,6 @@ import lombok.Data;
 @Entity
 public class Book {
 	@Id
-	@GeneratedValue
 	private String id;
 	private String reader;
 	private String isbn;
