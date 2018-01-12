@@ -11,8 +11,8 @@ import lombok.Data;
 @Entity
 public class Book {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue
+	private String id;
 	private String reader;
 	private String isbn;
 	private String title;

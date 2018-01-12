@@ -28,7 +28,10 @@ public class ReadingListController {
 	}
 
 	@RequestMapping(value = "/readinglist/{reader}", method = RequestMethod.POST)
-	public String addToReadingList(@PathVariable("reader") String reader, Book book) {
+	public String addToReadingList(@PathVariable("reader") String reader, Book book) throws Exception{
+		Book books = new Book();
+		books.setAuthor("sss");
+		readingListDAO.save(books);
 		book.setReader(reader);
 		readingListDAO.save(book);
 		return "redirect:/readinglist/{reader}";
