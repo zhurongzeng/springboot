@@ -21,11 +21,14 @@ logging:
     com.chu: DEBUG
 
 ---
+
 spring:
   profiles: dev
 
 amazon.associateId: dev
+
 ---
+
 spring:
   profiles: prd
 
