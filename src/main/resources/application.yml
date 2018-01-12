@@ -21,6 +21,5 @@ logging:
     file: '%date{HH:mm:ss.SSS} %-5p [%t] %C{0}.%M:%L %msg%xEx%n'
   level:
     org.hibernate.SQL: DEBUG
-    org.springframework.security: DEBUG
     com.chu: DEBUG
 
