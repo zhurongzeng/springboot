@@ -19,7 +19,7 @@ import com.chu.readinglist.dao.ReaderDAO;
  * @author zhurongzeng
  *
  */
-@Profile("prd")
+@Profile("dev")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
