@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +39,4 @@ public class ReadingListController {
         readingListDAO.save(book);
         return "redirect:/readinglist/{reader}";
     }
-
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public String login() {
-//        return "login";
-//    }
 }

@@ -21,11 +21,12 @@ public class Reader implements UserDetails {
 	private String username;
 	private String fullname;
 	private String password;
+	private String role;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// 授予READER权限
-		return Arrays.asList(new SimpleGrantedAuthority("READER"));
+		return Arrays.asList(new SimpleGrantedAuthority(getRole()));
 	}
 
 	@Override
