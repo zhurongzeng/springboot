@@ -12,3 +12,4 @@ gen
 /bin/
 /build/
 /.gradle/3.0/taskArtifacts/
+*.class
