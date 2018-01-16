@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -40,17 +41,15 @@
             <ul class="nav" id="main-menu">
                 <li>
                     <div class="user-img-div">
-                        <img src="assets/img/user.png" class="img-thumbnail"/>
+                        <img th:src="@{/assets/img/user.png}" class="img-thumbnail"/>
 
                         <div class="inner-text">
-                            Jhon Deo Alex
+                            <small th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></small>
                             <br/>
                             <small>Last Login : 2 Weeks Ago</small>
                         </div>
                     </div>
-
                 </li>
-
 
                 <li>
                     <a class="active-menu" href="index.html"><i class="fa fa-dashboard "></i>Dashboard</a>
@@ -99,30 +98,23 @@
                         <li>
                             <a href="social.html"><i class="fa fa-send "></i>Social</a>
                         </li>
-
                         <li>
                             <a href="message-task.html"><i class="fa fa-recycle "></i>Messages and Tasks</a>
                         </li>
-
-
                     </ul>
                 </li>
                 <li>
                     <a href="table.html"><i class="fa fa-flash "></i>Data Tables </a>
-
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-bicycle "></i>Forms <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-
                         <li>
                             <a href="form.html"><i class="fa fa-desktop "></i>Basic </a>
                         </li>
                         <li>
                             <a href="form-advance.html"><i class="fa fa-code "></i>Advance</a>
                         </li>
-
-
                     </ul>
                 </li>
                 <li>
@@ -152,20 +144,15 @@
                                 <li>
                                     <a href="#"><i class="fa fa-comments-o "></i>Third Level Link</a>
                                 </li>
-
                             </ul>
-
                         </li>
                     </ul>
                 </li>
-
                 <li>
                     <a href="blank.html"><i class="fa fa-square-o "></i>Blank Page</a>
                 </li>
             </ul>
-
         </div>
-
     </nav>
     <!-- /. NAV SIDE  -->
     <div id="page-wrapper">
@@ -174,7 +161,6 @@
                 <div class="col-md-12">
                     <h1 class="page-head-line">DASHBOARD</h1>
                     <h1 class="page-subhead-line">This is dummy text , you can replace it with your original text. </h1>
-
                 </div>
             </div>
             <!-- /. ROW  -->
@@ -203,22 +189,16 @@
                         </a>
                     </div>
                 </div>
-
             </div>
             <!-- /. ROW  -->
-
             <div class="row">
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-12">
-
                             <div id="reviews" class="carousel slide" data-ride="carousel">
-
                                 <div class="carousel-inner">
                                     <div class="item active">
-
                                         <div class="col-md-10 col-md-offset-1">
-
                                             <h4><i class="fa fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur
                                                 adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing elit onec
                                                 molestie non sem vel condimentum. <i class="fa fa-quote-right"></i></h4>
@@ -230,7 +210,6 @@
                                     </div>
                                     <div class="item">
                                         <div class="col-md-10 col-md-offset-1">
-
                                             <h4><i class="fa fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur
                                                 adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing elit onec
                                                 molestie non sem vel condimentum. <i class="fa fa-quote-right"></i></h4>
@@ -239,11 +218,9 @@
                                             </div>
                                             <h5 class="pull-right"><strong class="c-black">Lorem Dolor</strong></h5>
                                         </div>
-
                                     </div>
                                     <div class="item">
                                         <div class="col-md-10 col-md-offset-1">
-
                                             <h4><i class="fa fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur
                                                 adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing elit onec
                                                 molestie non sem vel condimentum. <i class="fa fa-quote-right"></i></h4>
@@ -261,33 +238,23 @@
                                     <li data-target="#reviews" data-slide-to="2"></li>
                                 </ol>
                                 <!--PREVIUS-NEXT BUTTONS-->
-
                             </div>
-
                         </div>
-
                     </div>
                     <!-- /. ROW  -->
                     <hr/>
-
                     <div class="panel panel-default">
-
                         <div id="carousel-example" class="carousel slide" data-ride="carousel"
                              style="border: 5px solid #000;">
-
                             <div class="carousel-inner">
                                 <div class="item active">
-
                                     <img src="assets/img/slideshow/1.jpg" alt=""/>
-
                                 </div>
                                 <div class="item">
                                     <img src="assets/img/slideshow/2.jpg" alt=""/>
-
                                 </div>
                                 <div class="item">
                                     <img src="assets/img/slideshow/3.jpg" alt=""/>
-
                                 </div>
                             </div>
                             <!--INDICATORS-->
