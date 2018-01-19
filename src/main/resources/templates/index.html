@@ -42,7 +42,7 @@
                         <img th:src="@{/assets/img/user.png}" class="img-thumbnail"/>
 
                         <div class="inner-text">
-                            <small th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></small>
+                            <strong th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></strong>
                             <br/>
                             <small>Last Login : 2 Weeks Ago</small>
                         </div>

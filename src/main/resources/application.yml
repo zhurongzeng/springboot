@@ -2,9 +2,7 @@ server.port: 8080
 
 spring:
   profiles:
-    active: dev
-  thymeleaf:
-    cache: false
+    active: prd
   datasource:
     url: jdbc:mysql://d0cbli.mysql.dbdev.dsfdc.com:5011/chu?useUnicode=yes&characterEncoding=UTF8&useSSL=false
     username: deployop
@@ -24,6 +22,8 @@ logging:
 
 spring:
   profiles: dev
+  thymeleaf:
+      cache: false
 
 amazon.associateId: dev
 
@@ -31,5 +31,7 @@ amazon.associateId: dev
 
 spring:
   profiles: prd
+  thymeleaf:
+      cache: true
 
 amazon.associateId: prd
