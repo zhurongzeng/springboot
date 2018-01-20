@@ -2,15 +2,9 @@ server.port: 8080
 
 spring:
   profiles:
-    active: prd
-  datasource:
-    url: jdbc:mysql://d0cbli.mysql.dbdev.dsfdc.com:5011/chu?useUnicode=yes&characterEncoding=UTF8&useSSL=false
-    username: deployop
-    password: DDeployop88#
-    driver-class-name: com.mysql.jdbc.Driver
+    active: pc
 
 logging:
-  path: E:/IdeaProjects/logs/springboot
   pattern:
     console: '%date{HH:mm:ss.SSS} %highlight(%-5p) [%t] %C{0}.%M:%L %msg%xEx%n'
     file: '%date{HH:mm:ss.SSS} %-5p [%t] %C{0}.%M:%L %msg%xEx%n'
@@ -21,17 +15,31 @@ logging:
 ---
 
 spring:
-  profiles: dev
+  profiles: work
   thymeleaf:
       cache: false
+  datasource:
+      url: jdbc:mysql://d0cbli.mysql.dbdev.dsfdc.com:5011/chu?useUnicode=yes&characterEncoding=UTF8&useSSL=false
+      username: deployop
+      password: DDeployop88#
 
-amazon.associateId: dev
+logging:
+  path: E:/IdeaProjects/logs/springboot
+
+amazon.associateId: work
 
 ---
 
 spring:
-  profiles: prd
+  profiles: pc
   thymeleaf:
-      cache: true
+      cache: false
+  datasource:
+      url: jdbc:mysql://localhost/chu?useUnicode=yes&characterEncoding=UTF8&useSSL=false
+      username: root
+      password: root
 
-amazon.associateId: prd
+logging:
+  path: G:/IdeaProjects/logs/springboot
+
+amazon.associateId: pc

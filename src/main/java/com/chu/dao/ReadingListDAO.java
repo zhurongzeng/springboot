@@ -1,10 +1,9 @@
-package com.chu.readinglist.dao;
+package com.chu.dao;
 
-import java.util.List;
-
+import com.chu.po.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.chu.readinglist.po.Book;
+import java.util.List;
 
 public interface ReadingListDAO extends JpaRepository<Book, Long> {
 	List<Book> findByReader(String reader);

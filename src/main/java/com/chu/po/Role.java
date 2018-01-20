@@ -1,4 +1,4 @@
-package com.chu.readinglist.po;
+package com.chu.po;
 
 import lombok.Data;
 

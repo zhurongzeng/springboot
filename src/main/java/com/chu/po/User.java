@@ -1,23 +1,19 @@
-package com.chu.readinglist.po;
+package com.chu.po;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Data;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "t_user")
-public class Reader implements UserDetails {
+public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id

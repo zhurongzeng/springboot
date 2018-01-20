@@ -1,11 +1,11 @@
-package com.chu.readinglist.po;
+package com.chu.po;
+
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.Data;
 
 @Data
 @Entity
