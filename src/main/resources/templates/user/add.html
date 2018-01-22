@@ -1,19 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="common::header"></head>
 <head>
-    <meta charset="UTF-8"/>
-    <title>新增用户</title>
-    <link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet"/>
-    <link th:href="@{/assets/css/font-awesome.css}" rel="stylesheet"/>
-    <link th:href="@{/assets/css/basic.css}" rel="stylesheet"/>
-    <link th:href="@{/assets/css/custom.css}" rel="stylesheet"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
-    <script type="text/javascript" th:src="@{/assets/js/jquery-1.10.2.js}"></script>
-    <script th:src="@{/assets/js/bootstrap.js}"></script>
-    <script th:src="@{/assets/js/jquery.metisMenu.js}"></script>
-    <script th:src="@{/assets/js/custom.js}"></script>
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             $("#submit").click(function () {
                 $("#userForm").submit();
                 alert("submit");
@@ -21,21 +11,30 @@
         });
     </script>
 </head>
-<body>
+<body class="flat-blue">
 <form id="userForm" name="userForm" th:action="@{/user/addUser}" method='POST' role="form">
-    <div class="form-group">
-        <label for="fullname">姓名</label>
-        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="请输入名称"/>
+    <div class="app-container">
+        <div class="row content-container">
+            <div class="container-fluid">
+                <div class="side-body padding-top">
+                    <div class="form-group">
+                        <label for="fullname">姓名</label>
+                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="请输入名称"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入名称"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="text" class="form-control" id="password" name="password" placeholder="请输入名称"/>
+                    </div>
+                    <!--<button id="submit" type="button" class="btn btn-primary">提交</button>-->
+                    <input type="submit"></input>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="username">用户名</label>
-        <input type="text" class="form-control" id="username" name="username" placeholder="请输入名称"/>
-    </div>
-    <div class="form-group">
-        <label for="password">密码</label>
-        <input type="text" class="form-control" id="password" name="password" placeholder="请输入名称"/>
-    </div>
-    <!--<button id="submit" type="button" class="btn btn-primary">提交</button>-->
-    <input type="submit"></input></form>
+</form>
 </body>
 </html>

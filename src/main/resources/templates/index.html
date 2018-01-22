@@ -1,100 +1,155 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="common::header"></head>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>首页</title>
-    <link href="assets/css/bootstrap.css" rel="stylesheet"/>
-    <link href="assets/css/font-awesome.css" rel="stylesheet"/>
-    <link href="assets/css/basic.css" rel="stylesheet"/>
-    <link href="assets/css/custom.css" rel="stylesheet"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
-    <script type="text/javascript" th:src="@{/assets/js/jquery-1.10.2.js}"></script>
-    <script src="assets/js/bootstrap.js"></script>
-    <script src="assets/js/jquery.metisMenu.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            var height=document.documentElement.clientHeight;
-            document.getElementById('iframe-page-content').style.height=height+'px';
-        });
-        function menuClick(menuUrl) {
-            $("#iframe-page-content").attr('src',menuUrl);
-        };
-    </script>
-    <script src="../static/assets/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
-<body>
-<div id="wrapper">
-    <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.html">ZACHARY CHU</a>
-        </div>
-
-        <div class="header-right">
-            <a href="message-task.html" class="btn btn-info" title="New Message"><b>30 </b><i
-                    class="fa fa-envelope-o fa-2x"></i></a>
-            <a href="message-task.html" class="btn btn-primary" title="New Task"><b>40 </b><i
-                    class="fa fa-bars fa-2x"></i></a>
-            <a th:href="@{/logout}" class="btn btn-danger" title="Logout"><i
-                    class="fa fa-exclamation-circle fa-2x"></i></a>
-        </div>
-    </nav>
-    <!-- /. NAV TOP  -->
-    <nav class="navbar-default navbar-side" role="navigation">
-        <div class="sidebar-collapse">
-            <ul class="nav" id="main-menu">
-                <li>
-                    <div class="user-img-div">
-                        <img th:src="@{/assets/img/user.png}" class="img-thumbnail"/>
-
-                        <div class="inner-text">
-                            <strong th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></strong>
-                            <br/>
-                            <small>Last Login : 2 Weeks Ago</small>
-                        </div>
+<body class="flat-blue">
+<div class="app-container">
+    <div class="row content-container">
+        <nav class="navbar navbar-default navbar-fixed-top navbar-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-expand-toggle">
+                        <i class="fa fa-bars icon"></i>
+                    </button>
+                    <ol class="breadcrumb navbar-breadcrumb">
+                        <li class="active">首页</li>
+                    </ol>
+                    <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                        <i class="fa fa-th icon"></i>
+                    </button>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                        <i class="fa fa-times icon"></i>
+                    </button>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false"><i class="fa fa-comments-o"></i></a>
+                        <ul class="dropdown-menu animated fadeInDown">
+                            <li class="title">
+                                Notification <span class="badge pull-right">0</span>
+                            </li>
+                            <li class="message">
+                                No new notification
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown danger">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false"><i class="fa fa-star-half-o"></i> 4</a>
+                        <ul class="dropdown-menu danger  animated fadeInDown">
+                            <li class="title">
+                                Notification <span class="badge pull-right">4</span>
+                            </li>
+                            <li>
+                                <ul class="list-group notifications">
+                                    <a href="#">
+                                        <li class="list-group-item">
+                                            <span class="badge">1</span> <i class="fa fa-exclamation-circle icon"></i>
+                                            new registration
+                                        </li>
+                                    </a>
+                                    <a href="#">
+                                        <li class="list-group-item">
+                                            <span class="badge success">1</span> <i class="fa fa-check icon"></i> new
+                                            orders
+                                        </li>
+                                    </a>
+                                    <a href="#">
+                                        <li class="list-group-item">
+                                            <span class="badge danger">2</span> <i class="fa fa-comments icon"></i>
+                                            customers messages
+                                        </li>
+                                    </a>
+                                    <a href="#">
+                                        <li class="list-group-item message">
+                                            view all
+                                        </li>
+                                    </a>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown profile">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></span>&nbsp;<span class="caret"></span></a>
+                        <ul class="dropdown-menu animated fadeInDown">
+                            <li class="profile-img">
+                                <img src="/assets2/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img"/>
+                            </li>
+                            <li>
+                                <div class="profile-info">
+                                    <h4 class="username" th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}"></h4>
+                                    <p th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.fullname}"></p>
+                                    <div class="btn-group margin-bottom-2x" role="group">
+                                        <button type="button" class="btn btn-default"><i class="fa fa-user"></i> Profile
+                                        </button>
+                                        <button type="button" class="btn btn-default" onclick="window.location.href='/logout'"><i class="fa fa-sign-out"></i>
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="side-menu sidebar-inverse">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="side-menu-container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">
+                            <div class="icon fa fa-paper-plane"></div>
+                            <div class="title">Zachary Chu</div>
+                        </a>
+                        <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                            <i class="fa fa-times icon"></i>
+                        </button>
                     </div>
-                </li>
-                <li>
-                    <a class="active-menu" th:href="@{/index}"><i class="fa fa-home"></i>首页</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-cogs"></i>系统管理<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#" onclick="menuClick('/user/add')"><i class="fa fa-user"></i>用户管理</a>
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a th:href="@{/index}" onclick="menuClick('/index')">
+                                <span class="icon fa fa-home"></span><span class="title">首页</span>
+                            </a>
                         </li>
-                        <li>
-                            <a th:href="@{/role/list}"><i class="glyphicon glyphicon-info-sign"></i>角色管理</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/system/list}"><i class="glyphicon glyphicon-cog"></i>系统配置</a>
+                        <li class="panel panel-default dropdown">
+                            <a data-toggle="collapse" href="#dropdown-element">
+                                <span class="icon fa fa-gears"></span><span class="title">系统管理</span>
+                            </a>
+                            <!-- Dropdown level 1 -->
+                            <div id="dropdown-element" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="nav navbar-nav">
+                                        <li><a href="#" onclick="menuClick('/user/list')"><span class="icon fa fa-user"></span>用户管理</a>
+                                        </li>
+                                        <li><a href="#" onclick="menuClick('/user/add')"><span class="icon fa fa-tag"></span>角色管理</a>
+                                        </li>
+                                        <li><a href="#" onclick="menuClick('/user/add')"><span class="icon fa fa-gear"></span>系统配置</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </li>
                     </ul>
-                </li>
-            </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
         </div>
-    </nav>
-    <!-- /. NAV SIDE  -->
-    <div id="page-wrapper">
-        <iframe id="iframe-page-content" src="/home" width="100%" frameborder="no" border="0" marginwidth="0" marginheight=" 0" scrolling="yes" allowtransparency="yes"></iframe>
-        <!-- /. PAGE INNER  -->
+        <!-- Main Content -->
+        <div class="container-fluid">
+            <iframe id="iframe-page-content" src="/home" width="100%" frameborder="no" border="0"
+                    marginwidth="0" marginheight=" 0" scrolling="yes" allowtransparency="yes"></iframe>
+        </div>
     </div>
-    <!-- /. PAGE WRAPPER  -->
+    <footer class="app-footer">
+        <div class="wrapper">
+            Zachary Chu © 2018 Copyright.
+        </div>
+    </footer>
 </div>
-<!-- /. WRAPPER  -->
-<div id="footer-sec">
-    Copyright &copy; 2016.Company name All rights reserved.More Templates
-    <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> -
-    Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-</div>
-<!-- /. FOOTER  -->
 </body>
 </html>
