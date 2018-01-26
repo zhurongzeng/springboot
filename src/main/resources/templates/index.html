@@ -9,7 +9,7 @@
 <div class="app-container">
     <div class="row content-container">
         <nav class="navbar navbar-default navbar-fixed-top navbar-top">
-            <div class="container-fluid">
+            <div id="nav-header" class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-expand-toggle">
                         <i class="fa fa-bars icon"></i>
@@ -124,11 +124,11 @@
                             <div id="dropdown-element" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <ul class="nav navbar-nav">
-                                        <li><a href="#" onclick="menuClick('/user/list')"><span class="icon fa fa-user"></span>用户管理</a>
+                                        <li><a href="#" onclick="menuClick('/user/view/list')"><span class="icon fa fa-user"></span>用户管理</a>
                                         </li>
-                                        <li><a href="#" onclick="menuClick('/user/add')"><span class="icon fa fa-tag"></span>角色管理</a>
+                                        <li><a href="#" onclick="menuClick('/user/view/add')"><span class="icon fa fa-tag"></span>角色管理</a>
                                         </li>
-                                        <li><a href="#" onclick="menuClick('/user/add')"><span class="icon fa fa-gear"></span>系统配置</a>
+                                        <li><a href="#" onclick="menuClick('/user/view/add')"><span class="icon fa fa-gear"></span>系统配置</a>
                                         </li>
                                     </ul>
                                 </div>

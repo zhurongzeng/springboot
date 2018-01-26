@@ -1,8 +1,8 @@
 $(function () {
-    var height = document.documentElement.clientHeight;
+    var height = document.documentElement.clientHeight - document.getElementById("nav-header").clientHeight;
     document.getElementById('iframe-page-content').style.height = height + 'px';
 
-    $('.navbar-nav li').click(function(e){
+    $('.navbar-nav li').click(function (e) {
         e.preventDefault();
         $('li').removeClass('active');
         $(this).addClass('active');
