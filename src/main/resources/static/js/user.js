@@ -127,6 +127,10 @@ var add = function (url) {
         btn: ['保存', '取消'],
         yes: function (index, layero) {
             var body = layer.getChildFrame("body", index);
+            var bootstrapValidator = body.find('#form_add_user').data('bootstrapValidator');
+            //手动触发验证
+            bootstrapValidator.validate();
+            if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
                 url: "/user/service/add",
@@ -139,7 +143,7 @@ var add = function (url) {
                         layer.alert(data.retMsg, {icon: 2});
                     }
                 }
-            });
+            });}
         },
         btn2: function (index, layero) {
             layer.close(index);
