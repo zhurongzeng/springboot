@@ -18,4 +18,6 @@ public interface UserService {
     long count(JSONObject params);
 
     long delete(List<String> ids) throws Exception;
+
+    User getUserByUsername(String username);
 }

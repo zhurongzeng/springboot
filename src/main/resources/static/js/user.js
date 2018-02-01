@@ -7,24 +7,30 @@ $(function () {
     var oButtonInit = new ButtonInit();
     oButtonInit.Init();
 
-    //3.初始化Modal事件
-    var oModalInit = new ModalInit();
-    oModalInit.Init();
+    addFormValidate();
 });
+
+/*************** 全局变量 start ******************/
+var addViewPath = "/user/view/add";
+var editViewPath = "/user/view/edit";
+
+var pagePath = "/user/service/list";
+var addSavePath = "/user/service/add";
+var editSavePath = "/user/service/edit";
+var deleteSavePath = "/user/service/delete";
+/*************** 全局变量 end ******************/
 
 var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
-        $('#table_user_list').bootstrapTable({
-            url: '/user/service/list',         //请求后台的URL（*）
-            method: 'get',                      //请求方式（*）
-            toolbar: '#toolbar',                //工具按钮用哪个容器
+        $("#table_user_list").bootstrapTable({
+            url: pagePath,         //请求后台的URL（*）
+            method: "get",                      //请求方式（*）
+            toolbar: "#toolbar",                //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,                   //是否显示分页（*）
-            sortable: false,                     //是否启用排序
-            sortOrder: "asc",                   //排序方式
             queryParams: oTableInit.queryParams,//传递参数（*）
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,                       //初始化加载第一页，默认第一页
@@ -35,27 +41,25 @@ var TableInit = function () {
             showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
-            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
-            cardView: false,                    //是否显示详细视图
-            detailView: false,                   //是否显示父子表
             columns: [{
                 checkbox: true
             }, {
-                field: 'id',
+                field: "id",
                 visible: false
             }, {
-                field: 'username',
-                title: '用户名'
+                field: "username",
+                title: "用户名"
             }, {
-                field: 'password',
-                title: '密码'
+                field: "password",
+                title: "密码"
             }, {
-                field: 'fullname',
-                title: '姓名'
+                field: "fullname",
+                title: "姓名"
             }, {
-                field: 'Desc',
-                title: '描述'
+                field: "Desc",
+                title: "描述"
             },]
         });
     };
@@ -80,38 +84,92 @@ var ButtonInit = function () {
     var oInit = new Object();
     oInit.Init = function () {
         $("#btn_user_add").click(function () {
-            add('/user/view/add');
+            add(addViewPath);
         });
 
         $("#btn_user_edit").click(function () {
-            edit('/user/view/edit');
+            edit(editViewPath);
         });
 
         $("#btn_user_delete").click(function () {
-            remove('/user/service/delete');
+            remove(deleteSavePath);
         });
     };
     return oInit;
 };
 
-var ModalInit = function () {
-    var oModalInit = new Object();
-    oModalInit.Init = function () {
-        $('#modal_user').on('shown.bs.modal', function (e) {
-            // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
-            $(this).css('display', 'block');
-            var modalHeight = ($(window).height() - $('#modal_user .modal-dialog').height()) / 2;
-            $(this).find('.modal-dialog').css({
-                'margin-top': modalHeight
-            });
-        });
-        $("#modal_user").on("hide.bs.modal", function () {
-            $(this).removeData("bs.modal");
-            // $("#table_user_list").bootstrapTable('refresh');
-            location.reload();
-        });
-    }
-    return oModalInit;
+var addFormValidate = function () {
+    $("#form_add_user").bootstrapValidator({
+        live: 'enabled',
+        message: '信息校验失败',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            fullname: {
+                message: '姓名校验失败',
+                validators: {
+                    notEmpty: {
+                        message: '姓名不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        message: '姓名长度必须大于2'
+                    }
+                }
+            },
+            username: {
+                message: '用户名校验失败',
+                validators: {
+                    notEmpty: {
+                        message: '用户名不能为空'
+                    },
+                    stringLength: {
+                        min: 6,
+                        max: 30,
+                        message: '用户名长度在6~30之间'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_\.]+$/,
+                        message: '用户名只能由字母，数字，点和下划线组成'
+                    },
+                    remote: {
+                        delay: 1000,
+                        type: 'POST',
+                        url: '/user/service/validate',
+                        message: '用户名已占用'
+                    },
+                    different: {
+                        field: 'password',
+                        message: '用户名和密码不能相同'
+                    }
+                }
+            },
+            password: {
+                validators: {
+                    notEmpty: {
+                        message: '密码不能为空'
+                    },
+                    stringLength: {
+                        min: 6,
+                        max: 30,
+                        message: '密码长度在6~30之间'
+                    },
+                    different: {
+                        field: 'username',
+                        message: '密码不能和用户名相同'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function (e) {
+        e.preventDefault();
+        var $form = $(e.target);
+        var bv = $form.data('bootstrapValidator');
+        addSave();
+    });
 };
 
 /**
@@ -119,37 +177,33 @@ var ModalInit = function () {
  */
 var add = function (url) {
     layer.open({
-        title: '<strong>新增用户</strong>',
+        title: "新增",
         type: 2,
-        area: ['768px', '450px'],
+        area: ["550px", "450px"],
         fixed: false,
         content: url,
-        btn: ['保存', '取消'],
-        yes: function (index, layero) {
-            var body = layer.getChildFrame("body", index);
-            var bootstrapValidator = body.find('#form_add_user').data('bootstrapValidator');
-            //手动触发验证
-            bootstrapValidator.validate();
-            if(bootstrapValidator.isValid()){
-            $.ajax({
-                type: "post",
-                url: "/user/service/add",
-                data: body.find('#form_add_user').serialize(),
-                success: function (data) {
-                    if (data.retCode == "0000") {
-                        layer.alert(data.retMsg, {icon: 1});
-                        layer.close(index);
-                    } else {
-                        layer.alert(data.retMsg, {icon: 2});
-                    }
-                }
-            });}
-        },
-        btn2: function (index, layero) {
-            layer.close(index);
-        },
         end: function () {
-            $("#table_user_list").bootstrapTable('refresh');
+            $("#table_user_list").bootstrapTable("refresh");
+        }
+    });
+};
+
+/**
+ * 新增保存
+ */
+var addSave = function () {
+    $.ajax({
+        type: "post",
+        url: addSavePath,
+        data: $("#form_add_user").serialize(),
+        success: function (data) {
+            if (data.retCode == "0000") {
+                layer.alert(data.retMsg, {icon: 1}, function () {
+                    parent.layer.closeAll();
+                });
+            } else {
+                layer.alert(data.retMsg, {icon: 2});
+            }
         }
     });
 };
@@ -158,29 +212,29 @@ var add = function (url) {
  * 修改用户
  */
 var edit = function (url) {
-    var selections = $("#table_user_list").bootstrapTable('getSelections');
+    var selections = $("#table_user_list").bootstrapTable("getSelections");
     if (selections.length > 1) {
-        layer.alert('只能选择一行进行编辑！', {icon: 7});
+        layer.alert("只能选择一行进行编辑！", {icon: 7});
         return;
     }
     if (selections.length <= 0) {
-        layer.alert('请选择一行数据进行编辑！', {icon: 7});
+        layer.alert("请选择一行数据进行编辑！", {icon: 7});
         return;
     }
     var userId = selections[0].id;
     layer.open({
-        title: '<strong>修改用户</strong>',
+        title: "编辑",
         type: 2,
-        area: ['768px', '450px'],
+        area: ["768px", "450px"],
         fixed: false,
-        content: url + "?userId=" + userId,
-        btn: ['保存', '取消'],
+        content: url + "?id=" + userId,
+        btn: ["保存", "取消"],
         yes: function (index, layero) {
             var body = layer.getChildFrame("body", index);
             $.ajax({
                 type: "post",
-                url: "/user/service/edit",
-                data: body.find('#form_edit_user').serialize(),
+                url: editSavePath,
+                data: body.find("#form_edit_user").serialize(),
                 success: function (data) {
                     if (data.retCode == "0000") {
                         layer.alert(data.retMsg, {icon: 1});
@@ -195,7 +249,7 @@ var edit = function (url) {
             layer.close(index);
         },
         end: function () {
-            $("#table_user_list").bootstrapTable('refresh');
+            $("#table_user_list").bootstrapTable("refresh");
         }
     });
 };
@@ -204,27 +258,27 @@ var edit = function (url) {
  * 删除用户
  */
 var remove = function (url) {
-    var selections = $("#table_user_list").bootstrapTable('getSelections');
+    var selections = $("#table_user_list").bootstrapTable("getSelections");
     if (selections.length == 0) {
-        layer.alert('请至少选择一条记录进行操作!', {icon: 7});
+        layer.alert("请至少选择一条记录进行操作!", {icon: 7});
         return;
     }
     var ids = [];
     for (var i = 0; i < selections.length; i++) {
         ids.push(selections[i].id);
     }
-    layer.confirm('确定要删除吗?', {icon: 3, title: '提示'},
+    layer.confirm("确定要删除吗?", {icon: 3, title: "提示"},
         function (index) {
             $.ajax({
                 url: url,
-                method: 'post',
+                method: "post",
                 dataType: "json",
-                contentType: 'application/json;charset=UTF-8',
+                contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify(ids),
                 success: function (data) {
                     if (data.retCode == "0000") {
                         layer.alert("删除成功，共删除" + data.retData + "条记录！", {icon: 1});
-                        $("#table_user_list").bootstrapTable('refresh');
+                        $("#table_user_list").bootstrapTable("refresh");
                     } else {
                         layer.alert("删除失败!", {icon: 2});
                     }

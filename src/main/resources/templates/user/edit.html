@@ -3,11 +3,6 @@
 <head th:include="common::header"></head>
 <head>
     <script type="text/javascript" th:src="@{/js/user.js}"></script>
-    <style type="text/css">
-        .control-label {
-            padding-right: 0;
-        }
-    </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -32,13 +27,6 @@
                     <div class="col-sm-6">
                         <input type="email" class="form-control" id="txt_edit_username" name="username"
                                th:value="${user.username}" placeholder="请输入用户名"/>
-                    </div>
-                </div>
-                <div class="hide form-group">
-                    <label class="col-sm-3 control-label" for="txt_edit_password">密码</label>
-                    <div class="col-sm-6">
-                        <input type="password" class="form-control" id="txt_edit_password" name="password"
-                               th:value="${user.password}"/>
                     </div>
                 </div>
             </form>

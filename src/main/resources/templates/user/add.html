@@ -3,51 +3,10 @@
 <head th:include="common::header"></head>
 <head>
     <script type="text/javascript" th:src="@{/js/user.js}"></script>
-    <style type="text/css">
-        .control-label {
-            padding-right: 0;
-        }
-    </style>
-    <script type="text/javascript">
-        $(function () {
-            $('form').bootstrapValidator({
-                message: 'This value is not valid',
-                feedbackIcons: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    username: {
-                        message: '用户名验证失败',
-                        validators: {
-                            notEmpty: {
-                                message: '用户名不能为空'
-                            }
-                        }
-                    },
-                    fullname: {
-                        validators: {
-                            notEmpty: {
-                                message: '姓名不能为空'
-                            }
-                        }
-                    },
-                    password: {
-                        validators: {
-                            notEmpty: {
-                                message: '密码不能为空'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" style="margin:15px 60px;">
         <div class="panel-body">
             <form class="form-horizontal" id="form_add_user" role="form">
                 <div class="form-group">
@@ -60,7 +19,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="txt_add_username">用户名</label>
                     <div class="col-sm-6">
-                        <input type="email" class="form-control" id="txt_add_username" name="username"
+                        <input type="text" class="form-control" id="txt_add_username" name="username"
                                placeholder="请输入用户名"/>
                     </div>
                 </div>
@@ -69,6 +28,12 @@
                     <div class="col-sm-6">
                         <input type="password" class="form-control" id="txt_add_password" name="password"
                                placeholder="请输入密码"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">保存</button>&nbsp;&nbsp;
+                        <button type="reset" class="btn btn-default">重置</button>
                     </div>
                 </div>
             </form>

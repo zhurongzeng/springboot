@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head th:include="common::header"></head>
+<head>
+    <script type="text/javascript" th:src="@{/js/dictionary.js}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="margin:15px 60px;">
+        <div class="panel-body">
+            <form class="form-horizontal" id="form_edit_dictionary" role="form">
+                <div class="hide form-group">
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" id="txt_edit_id" name="id" th:value="${dictionary.id}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="txt_edit_name">字典名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="txt_edit_name" name="name"
+                               th:value="${dictionary.name}" placeholder="请输入字典名称"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="txt_edit_code">字典编码</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="txt_edit_code" name="code"
+                               th:value="${dictionary.code}" placeholder="请输入字典编码"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="txt_edit_type">类型</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="txt_edit_type" name="type" disabled="disabled">
+                            <option value="">请选择...</option>
+                            <option value="1" th:if="${dictionary.type=='1'}" th:selected="selected">字典项</option>
+                            <option value="2" th:if="${dictionary.type=='2'}" th:selected="selected">字典值</option>
+                            <option value="1" th:if="${dictionary.type!='1'}">字典项</option>
+                            <option value="2" th:if="${dictionary.type!='2'}">字典值</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="txt_edit_status">状态</label>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="form-control toggle-checkbox" id="txt_edit_status" name="status"
+                               checked="checked" data-on-text="启用" data-off-text="禁用" th:value="${dictionary.status}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="txt_edit_remark">备注</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" id="txt_edit_remark" name="remark" rows="3"
+                                  th:value="${dictionary.remark}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">保存</button>&nbsp;&nbsp;
+                        <button type="reset" class="btn btn-default">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

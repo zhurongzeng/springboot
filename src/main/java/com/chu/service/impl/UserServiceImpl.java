@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User getUser(String userId) {
-        return userDAO.findById(Long.parseLong(userId));
+        return userDAO.findOne(userId);
     }
 
     @Override
@@ -55,17 +55,21 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userDAO.count();
     }
 
-
     @Override
     @Transactional
     public long delete(List<String> ids) throws Exception {
         List<User> userList = new ArrayList<>();
         for (String id : ids) {
             User user = new User();
-            user.setId(Long.parseLong(id));
+            user.setId(id);
             userList.add(user);
         }
         userDAO.delete(userList);
         return ids.size();
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userDAO.findByUsername(username);
     }
 }

@@ -6,6 +6,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface UserDAO extends PagingAndSortingRepository<User, String> {
     User findByUsername(String username);
-
-    User findById(long userId);
 }

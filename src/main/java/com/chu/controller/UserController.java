@@ -1,11 +1,11 @@
 package com.chu.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.chu.dao.UserDAO;
+import com.chu.common.utils.ReturnMessageUtil;
 import com.chu.dto.ReturnMsg;
 import com.chu.po.User;
 import com.chu.service.UserService;
+import com.chu.common.utils.UpdateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户Controller类
@@ -36,9 +35,9 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/view/{index}", method = RequestMethod.GET)
-    public String view(@PathVariable("index") String index, String userId, Model model) {
+    public String view(@PathVariable("index") String index, String id, Model model) {
         if ("edit".equals(index)) {
-            User user = userService.getUser(userId);
+            User user = userService.getUser(id);
             model.addAttribute("user", user);
         }
         return "/user/" + index;
@@ -79,16 +78,11 @@ public class UserController {
             String password = user.getPassword();
             password = encoder.encode(password);
             user.setPassword(password);
-            if (userService.save(user) != null) {
-                retMsg.setRetCode("0000");
-                retMsg.setRetMsg("保存成功");
-            } else {
-                retMsg.setRetCode("0001");
-                retMsg.setRetMsg("保存失败");
-            }
+            retMsg = ReturnMessageUtil.returnMessage(userService.save(user) != null, null);
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
+            log.error("保存用户异常！\n", e);
         }
         return retMsg;
     }
@@ -103,17 +97,14 @@ public class UserController {
     @ResponseBody
     public ReturnMsg edit(User user) {
         ReturnMsg retMsg = new ReturnMsg();
+        User targetUser = userService.getUser(user.getId());
+        UpdateUtil.copyNonNullProperties(user, targetUser);
         try {
-            if (userService.save(user) != null) {
-                retMsg.setRetCode("0000");
-                retMsg.setRetMsg("修改成功");
-            } else {
-                retMsg.setRetCode("0001");
-                retMsg.setRetMsg("修改失败");
-            }
+            retMsg = ReturnMessageUtil.returnMessage(userService.save(targetUser) != null, null);
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
+            log.error("修改用户异常！\n", e);
         }
         return retMsg;
     }
@@ -130,19 +121,25 @@ public class UserController {
         ReturnMsg retMsg = new ReturnMsg();
         try {
             long count = userService.delete(ids);
-            if (count > 0) {
-                retMsg.setRetCode("0000");
-                retMsg.setRetMsg("删除成功");
-                retMsg.setRetData(count);
-            } else {
-                retMsg.setRetCode("0001");
-                retMsg.setRetMsg("删除失败");
-            }
+            retMsg = ReturnMessageUtil.returnMessage(count > 0, count);
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
-            log.error("********** 删除用户异常！ **********\n", e);
+            log.error("删除用户异常！\n", e);
         }
         return retMsg;
+    }
+
+    @RequestMapping(value = "/service/validate", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject validate(@RequestParam String username) {
+        JSONObject result = new JSONObject();
+        User user = userService.getUserByUsername(username);
+        if (user != null) {
+            result.put("valid", false);
+        } else {
+            result.put("valid", true);
+        }
+        return result;
     }
 }

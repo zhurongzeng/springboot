@@ -15,3 +15,13 @@ body {
 label {
 	font-weight: bold;
 }
+
+.control-label {
+	padding-right: 0;
+}
+
+.center-vertical {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
