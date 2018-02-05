@@ -1,12 +1,12 @@
-package com.chu.po;
+package com.chu.entity;
 
 import com.chu.common.po.BasePO;
 import com.chu.common.po.GeneratedUID;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 数据字典实体类
@@ -24,7 +24,13 @@ public class Dictionary extends BasePO {
     private String code;
     private String name;
     private String type;
-    private String parent_code;
+//    private String parentId;
     private String status;
     private String remark;
+//    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent_id")
+//    private Dictionary parent;
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "parent_id")
+    private List<Dictionary> children = new ArrayList<>();
 }

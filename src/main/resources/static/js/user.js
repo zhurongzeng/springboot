@@ -100,74 +100,74 @@ var ButtonInit = function () {
 
 var addFormValidate = function () {
     $("#form_add_user").bootstrapValidator({
-        live: 'enabled',
-        message: '信息校验失败',
+        live: "enabled",
+        message: "信息校验失败",
         feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
+            valid: "glyphicon glyphicon-ok",
+            invalid: "glyphicon glyphicon-remove",
+            validating: "glyphicon glyphicon-refresh"
         },
         fields: {
             fullname: {
-                message: '姓名校验失败',
+                message: "姓名校验失败",
                 validators: {
                     notEmpty: {
-                        message: '姓名不能为空'
+                        message: "姓名不能为空"
                     },
                     stringLength: {
                         min: 2,
-                        message: '姓名长度必须大于2'
+                        message: "姓名长度必须大于2"
                     }
                 }
             },
             username: {
-                message: '用户名校验失败',
+                message: "用户名校验失败",
                 validators: {
                     notEmpty: {
-                        message: '用户名不能为空'
+                        message: "用户名不能为空"
                     },
                     stringLength: {
                         min: 6,
                         max: 30,
-                        message: '用户名长度在6~30之间'
+                        message: "用户名长度在6~30之间"
                     },
                     regexp: {
                         regexp: /^[a-zA-Z0-9_\.]+$/,
-                        message: '用户名只能由字母，数字，点和下划线组成'
+                        message: "用户名只能由字母，数字，点和下划线组成"
                     },
                     remote: {
                         delay: 1000,
-                        type: 'POST',
-                        url: '/user/service/validate',
-                        message: '用户名已占用'
+                        type: "POST",
+                        url: "/user/service/validate",
+                        message: "用户名已占用"
                     },
                     different: {
-                        field: 'password',
-                        message: '用户名和密码不能相同'
+                        field: "password",
+                        message: "用户名和密码不能相同"
                     }
                 }
             },
             password: {
                 validators: {
                     notEmpty: {
-                        message: '密码不能为空'
+                        message: "密码不能为空"
                     },
                     stringLength: {
                         min: 6,
                         max: 30,
-                        message: '密码长度在6~30之间'
+                        message: "密码长度在6~30之间"
                     },
                     different: {
-                        field: 'username',
-                        message: '密码不能和用户名相同'
+                        field: "username",
+                        message: "密码不能和用户名相同"
                     }
                 }
             }
         }
-    }).on('success.form.bv', function (e) {
+    }).on("success.form.bv", function (e) {
         e.preventDefault();
         var $form = $(e.target);
-        var bv = $form.data('bootstrapValidator');
+        var bv = $form.data("bootstrapValidator");
         addSave();
     });
 };

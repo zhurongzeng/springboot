@@ -1,7 +1,6 @@
 package com.chu.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.chu.po.User;
+import com.chu.entity.User;
 
 import java.util.List;
 
@@ -9,13 +8,13 @@ import java.util.List;
  * 用户业务处理接口
  */
 public interface UserService {
-    List<User> list(int limit, int offset, JSONObject params);
+    List<User> list(int limit, int offset, User user);
 
     User getUser(String userId);
 
     User save(User user) throws Exception;
 
-    long count(JSONObject params);
+    long count(User user);
 
     long delete(List<String> ids) throws Exception;
 

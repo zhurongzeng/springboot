@@ -1,4 +1,4 @@
-package com.chu.po;
+package com.chu.entity;
 
 import com.chu.common.po.BasePO;
 import com.chu.common.po.GeneratedUID;
@@ -26,6 +26,7 @@ public class User extends BasePO implements UserDetails {
     private String fullname;
     private String certType;
     private String certId;
+    private String birthday;
     private String gender;
     private String phone;
     private String mailAddress;
@@ -35,18 +36,20 @@ public class User extends BasePO implements UserDetails {
     private String qqNo;
     private String wxNo;
     private String remark;
-    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(name = "t_user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> auths = new ArrayList<>();
+        List<GrantedAuthority> authorityList = new ArrayList<>();
         List<Role> roles = this.getRoles();
         for (Role role : roles) {
-            auths.add(new SimpleGrantedAuthority(role.getName()));
+            authorityList.add(new SimpleGrantedAuthority(role.getName()));
         }
-        return auths;
+        return authorityList;
     }
 
     @Override

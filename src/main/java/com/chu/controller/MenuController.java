@@ -2,14 +2,12 @@ package com.chu.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chu.common.utils.ReturnMessageUtil;
-import com.chu.dto.ReturnMsg;
-import com.chu.entity.User;
-import com.chu.service.UserService;
 import com.chu.common.utils.UpdateUtil;
+import com.chu.dto.ReturnMsg;
+import com.chu.entity.Menu;
+import com.chu.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 用户Controller类
+ * 数据字典Controller类
  *
  * @author zhurongzeng
  */
 @Slf4j
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/menu")
+public class MenuController {
     @Autowired
-    private UserService userService;
+    private MenuService menuService;
 
     /**
      * 页面展示
@@ -37,10 +35,10 @@ public class UserController {
     @RequestMapping(value = "/view/{index}", method = RequestMethod.GET)
     public String view(@PathVariable("index") String index, String id, Model model) {
         if ("edit".equals(index)) {
-            User user = userService.getUser(id);
-            model.addAttribute("user", user);
+            Menu menu = menuService.getMenu(id);
+            model.addAttribute("menu", menu);
         }
-        return "/user/" + index;
+        return "/menu/" + index;
     }
 
     /**
@@ -55,34 +53,30 @@ public class UserController {
     @ResponseBody
     public JSONObject list(int limit, int offset, String queryParams) {
         JSONObject result = new JSONObject();
-        User user = JSONObject.parseObject(queryParams, User.class);
-        List<User> userList = userService.list(limit, offset, user);
-        long count = userService.count(user);
+        Menu menu = JSONObject.parseObject(queryParams, Menu.class);
+        List<Menu> menuList = menuService.list(limit, offset, menu);
+        long count = menuService.count(menu);
         result.put("total", count);
-        result.put("rows", userList);
+        result.put("rows", menuList);
         return result;
     }
 
     /**
      * 新增
      *
-     * @param user
+     * @param menu
      * @return
      */
     @RequestMapping(value = "/service/add", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnMsg add(User user) {
+    public ReturnMsg add(Menu menu) {
         ReturnMsg retMsg = new ReturnMsg();
         try {
-            PasswordEncoder encoder = new BCryptPasswordEncoder();
-            String password = user.getPassword();
-            password = encoder.encode(password);
-            user.setPassword(password);
-            retMsg = ReturnMessageUtil.returnMessage(userService.save(user) != null, null);
+            retMsg = ReturnMessageUtil.returnMessage(menuService.save(menu) != null, null);
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
-            log.error("保存用户异常！\n", e);
+            log.error("保存字典异常！\n", e);
         }
         return retMsg;
     }
@@ -90,21 +84,21 @@ public class UserController {
     /**
      * 修改
      *
-     * @param user
+     * @param menu
      * @return
      */
     @RequestMapping(value = "/service/edit", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnMsg edit(User user) {
+    public ReturnMsg edit(Menu menu) {
         ReturnMsg retMsg = new ReturnMsg();
         try {
-            User targetUser = userService.getUser(user.getId());
-            UpdateUtil.copyNonNullProperties(user, targetUser);
-            retMsg = ReturnMessageUtil.returnMessage(userService.save(targetUser) != null, null);
+            Menu targetMenu = menuService.getMenu(menu.getId());
+            UpdateUtil.copyNonNullProperties(menu, targetMenu);
+            retMsg = ReturnMessageUtil.returnMessage(menuService.save(targetMenu) != null, null);
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
-            log.error("修改用户异常！\n", e);
+            log.error("修改字典异常！\n", e);
         }
         return retMsg;
     }
@@ -120,22 +114,28 @@ public class UserController {
     public ReturnMsg delete(@RequestBody List<String> ids) {
         ReturnMsg retMsg = new ReturnMsg();
         try {
-            long count = userService.delete(ids);
+            long count = menuService.delete(ids);
             retMsg = ReturnMessageUtil.returnMessage(count > 0, count);
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
-            log.error("删除用户异常！\n", e);
+            log.error("删除字典异常！\n", e);
         }
         return retMsg;
     }
 
+    /**
+     * 校验
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/service/validate", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject validate(@RequestParam String username) {
+    public JSONObject validate(@RequestParam String id) {
         JSONObject result = new JSONObject();
-        User user = userService.getUserByUsername(username);
-        if (user != null) {
+        Menu menu = menuService.getMenu(id);
+        if (menu != null) {
             result.put("valid", false);
         } else {
             result.put("valid", true);

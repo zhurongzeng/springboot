@@ -4,14 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.chu.common.utils.ReturnMessageUtil;
 import com.chu.common.utils.UpdateUtil;
 import com.chu.dto.ReturnMsg;
-import com.chu.po.Dictionary;
-import com.chu.po.User;
+import com.chu.entity.Dictionary;
 import com.chu.service.DictionaryService;
-import com.chu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -57,9 +53,9 @@ public class DictionaryController {
     @ResponseBody
     public JSONObject list(int limit, int offset, String queryParams) {
         JSONObject result = new JSONObject();
-        JSONObject params = JSONObject.parseObject(queryParams);
-        List<Dictionary> dictionaryList = dictionaryService.list(limit, offset, params);
-        long count = dictionaryService.count(params);
+        Dictionary dictionary = JSONObject.parseObject(queryParams, Dictionary.class);
+        List<Dictionary> dictionaryList = dictionaryService.list(limit, offset, dictionary);
+        long count = dictionaryService.count(dictionary);
         result.put("total", count);
         result.put("rows", dictionaryList);
         return result;

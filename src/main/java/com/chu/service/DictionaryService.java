@@ -1,7 +1,6 @@
 package com.chu.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.chu.po.Dictionary;
+import com.chu.entity.Dictionary;
 
 import java.util.List;
 
@@ -11,9 +10,9 @@ import java.util.List;
 public interface DictionaryService {
     Dictionary getDictionary(String id);
 
-    List<Dictionary> list(int limit, int offset, JSONObject params);
+    List<Dictionary> list(int limit, int offset, Dictionary dictionary);
 
-    long count(JSONObject params);
+    long count(Dictionary dictionary);
 
     Dictionary save(Dictionary dictionary);
 

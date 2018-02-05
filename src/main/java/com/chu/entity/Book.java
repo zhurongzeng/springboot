@@ -1,4 +1,4 @@
-package com.chu.po;
+package com.chu.entity;
 
 import lombok.Data;
 

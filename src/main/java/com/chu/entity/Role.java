@@ -1,11 +1,10 @@
-package com.chu.po;
+package com.chu.entity;
 
 import com.chu.common.po.BasePO;
 import com.chu.common.po.GeneratedUID;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 

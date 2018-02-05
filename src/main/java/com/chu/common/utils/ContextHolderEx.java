@@ -1,6 +1,6 @@
 package com.chu.common.utils;
 
-import com.chu.po.User;
+import com.chu.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextImpl;

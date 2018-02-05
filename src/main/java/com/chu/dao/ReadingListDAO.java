@@ -1,6 +1,6 @@
 package com.chu.dao;
 
-import com.chu.po.Book;
+import com.chu.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

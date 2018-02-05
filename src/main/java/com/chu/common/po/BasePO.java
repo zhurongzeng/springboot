@@ -2,7 +2,7 @@ package com.chu.common.po;
 
 import com.chu.common.utils.ContextHolderEx;
 import com.chu.common.utils.UUIDUtil;
-import com.chu.po.User;
+import com.chu.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

@@ -7,7 +7,9 @@ $(function () {
     var oButtonInit = new ButtonInit();
     oButtonInit.Init();
 
-    formValidate();
+    //3.初始化Form
+    var oFormInit = new FormInit();
+    oFormInit.Init();
 });
 
 /*************** 全局变量 start ******************/
@@ -21,29 +23,43 @@ var deletePath = "/dictionary/service/delete";
 var checkValidPath = "/dictionary/service/validate";
 /*************** 全局变量 end ******************/
 
+/**
+ * 表格初始化
+ */
 var TableInit = function () {
-    var oTableInit = new Object();
+    var oTableInit = {};
     //初始化Table
     oTableInit.Init = function () {
         $("#table_dictionary_list").bootstrapTable({
-            url: pagePath,         //请求后台的URL（*）
-            method: "get",                      //请求方式（*）
-            toolbar: "#toolbar",                //工具按钮用哪个容器
-            striped: true,                      //是否显示行间隔色
-            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-            pagination: true,                   //是否显示分页（*）
-            queryParams: oTableInit.queryParams,//传递参数（*）
-            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 10,                       //每页的记录行数（*）
-            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-            strictSearch: true,
-            showColumns: true,                  //是否显示所有的列
-            showRefresh: true,                  //是否显示刷新按钮
-            minimumCountColumns: 2,             //最少允许的列数
-            clickToSelect: true,                //是否启用点击选中行
-            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
-            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+            url: pagePath,
+            method: "get",
+            toolbar: "#toolbar",
+            striped: true,
+            cache: false,
+            pagination: true,
+            sidePagination: "server",
+            pageNumber: 1,
+            pageSize: 10,
+            pageList: [10, 25, 50, 100],
+            showColumns: true,
+            showRefresh: true,
+            clickToSelect: true,
+            uniqueId: "id",
+            showToggle: true,
+            detailView: true,
+            queryParams: function (params) {
+                var queryParams;
+                queryParams = {
+                    code: $("#txt_query_code").val(),
+                    name: $("#txt_query_name").val(),
+                    type: "1"
+                };
+                return {
+                    limit: params.limit,
+                    offset: params.offset,
+                    queryParams: JSON.stringify(queryParams)
+                };
+            },
             columns: [{
                 checkbox: true
             }, {
@@ -70,28 +86,85 @@ var TableInit = function () {
             }, {
                 field: "remark",
                 title: "备注"
-            },]
+            }, {
+                field: 'operation',
+                title: '操作',
+                events: oTableInit.InitEvents,
+                formatter: oTableInit.InitOperation
+            }],
+            onExpandRow: function (index, row, $detail) {
+                oTableInit.InitSubTable(index, row, $detail);
+            }
         });
     };
 
-    //得到查询的参数
-    oTableInit.queryParams = function (params) {
-        var queryParams = {
-            code: $("#txt_query_code").val(),
-            name: $("#txt_query_name").val()
-        };
-        var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-            limit: params.limit,   //页面大小
-            offset: params.offset,  //页码
-            queryParams: JSON.stringify(queryParams)
-        };
-        return temp;
+    oTableInit.InitOperation = function operateFormatter(value, row, index) {
+        return [
+            '<button type="button" class="dicValue btn btn-primary btn-xs" style="margin:0 5px;">添加下级</button>'
+        ].join('');
+    };
+
+    oTableInit.InitEvents = {
+        'click .dicValue': function (e, value, row, index) {
+            viewDicValue(addViewPath);
+        }
+    };
+
+    //初始化子表格(无限循环)
+    oTableInit.InitSubTable = function (index, row, $detail) {
+        var subTable = $detail.html('<table></table>').find('table');
+        $(subTable).bootstrapTable({
+            data: row.children,
+            striped: true,
+            cache: false,
+            pagination: true,
+            detailView: true,
+            checkboxHeader: false,
+            pageNumber: 1,
+            pageSize: 10,
+            pageList: [10, 25, 50, 100],
+            clickToSelect: true,
+            uniqueId: "id",
+            columns: [{
+                checkbox: true
+            }, {
+                field: "id",
+                visible: false
+            }, {
+                field: "name",
+                title: "名称"
+            }, {
+                field: "code",
+                title: "编码"
+            }, {
+                field: "type",
+                title: "类别",
+                formatter: function (value, row, index) {
+                    return dataFormat("type", value);
+                }
+            }, {
+                field: "status",
+                title: "状态",
+                formatter: function (value, row, index) {
+                    return dataFormat("status", value);
+                }
+            }, {
+                field: "remark",
+                title: "备注"
+            }],
+            onExpandRow: function (index, row, $Subdetail) {
+                oTableInit.InitSubTable(index, row, $Subdetail);
+            }
+        });
     };
     return oTableInit;
 };
 
+/**
+ * 按钮初始化
+ */
 var ButtonInit = function () {
-    var oInit = new Object();
+    var oInit = {};
     oInit.Init = function () {
         $("#btn_dictionary_add").click(function () {
             add(addViewPath);
@@ -108,55 +181,63 @@ var ButtonInit = function () {
     return oInit;
 };
 
-var formValidate = function () {
-    $("form").bootstrapValidator({
-        live: 'enabled',
-        message: '信息校验失败',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            name: {
-                message: '字典名称校验失败',
-                validators: {
-                    notEmpty: {
-                        message: '字典名称不能为空'
-                    }
-                }
+/**
+ * 表单初始化
+ */
+var FormInit = function () {
+    var oInit = {};
+    oInit.Init = function () {
+        $("form").bootstrapValidator({
+            live: "enabled",
+            message: "信息校验失败",
+            feedbackIcons: {
+                valid: "glyphicon glyphicon-ok",
+                invalid: "glyphicon glyphicon-remove",
+                validating: "glyphicon glyphicon-refresh"
             },
-            code: {
-                message: '字典编码校验失败',
-                validators: {
-                    notEmpty: {
-                        message: '字典编码不能为空'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_\.]+$/,
-                        message: '字典编码只能由字母，数字，点和下划线组成'
-                    },
-                    remote: {
-                        delay: 1000,
-                        type: 'POST',
-                        url: checkValidPath,
-                        message: '字典编码已存在'
+            fields: {
+                name: {
+                    message: "字典名称校验失败",
+                    validators: {
+                        notEmpty: {
+                            message: "字典名称不能为空"
+                        }
+                    }
+                },
+                code: {
+                    message: "字典编码校验失败",
+                    validators: {
+                        notEmpty: {
+                            message: "字典编码不能为空"
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_.]+$/,
+                            message: "字典编码只能由字母，数字，点和下划线组成"
+                        },
+                        remote: {
+                            delay: 1000,
+                            type: "POST",
+                            url: checkValidPath,
+                            message: "字典编码已存在"
+                        }
                     }
                 }
             }
-        }
-    }).on('success.form.bv', function (e) {
-        e.preventDefault();
-        var $form = $(e.target);
-        var bv = $form.data('bootstrapValidator');
-        var formId = $form.getAttribute("id");
-        if(formId=="form_add_dictionary"){
-            addSave();
-        }else if (formId=="form_edit_dictionary"){
-            editSave();
-        }
-    });
-};
+        }).on("click", "[type=submit]", function (e) {
+            // 编辑时取消编码校验
+            $("#form_edit_dictionary").bootstrapValidator("enableFieldValidators", "code", false);
+        }).on("success.form.bv", function (e) {
+            e.preventDefault();
+            var formId = e.target.getAttribute("id");
+            if (formId === "form_add_dictionary") {
+                addSave();
+            } else if (formId === "form_edit_dictionary") {
+                editSave();
+            }
+        });
+    };
+    return oInit;
+}
 
 /**
  * 新增用户
@@ -185,7 +266,7 @@ var addSave = function () {
         url: addSavePath,
         data: $("#form_add_dictionary").serialize(),
         success: function (data) {
-            if (data.retCode == "0000") {
+            if (data.retCode === "0000") {
                 layer.alert("保存成功", {icon: 1}, function () {
                     parent.layer.closeAll();
                 });
@@ -197,7 +278,7 @@ var addSave = function () {
 };
 
 /**
- * 修改用户
+ * 修改
  */
 var edit = function (url) {
     var selections = $("#table_dictionary_list").bootstrapTable("getSelections");
@@ -233,7 +314,7 @@ var editSave = function () {
         url: editSavePath,
         data: $("#form_edit_dictionary").serialize(),
         success: function (data) {
-            if (data.retCode == "0000") {
+            if (data.retCode === "0000") {
                 layer.alert("保存成功", {icon: 1}, function () {
                     parent.layer.closeAll();
                 });
@@ -245,11 +326,11 @@ var editSave = function () {
 };
 
 /**
- * 删除用户
+ * 删除
  */
 var remove = function (url) {
     var selections = $("#table_dictionary_list").bootstrapTable("getSelections");
-    if (selections.length == 0) {
+    if (selections.length === 0) {
         layer.alert("请至少选择一条记录进行操作!", {icon: 7});
         return;
     }
@@ -266,7 +347,7 @@ var remove = function (url) {
                 contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify(ids),
                 success: function (data) {
-                    if (data.retCode == "0000") {
+                    if (data.retCode === "0000") {
                         layer.alert("删除成功，共删除" + data.retData + "条记录！", {icon: 1});
                         $("#table_dictionary_list").bootstrapTable("refresh");
                     } else {
@@ -278,20 +359,15 @@ var remove = function (url) {
         });
 };
 
-var dataFormat = function (columnName, value) {
-    var type = value;
-    if (columnName == "type") {
-        if (value == "1") {
-            type = "字典项";
-        } else if (value == "2") {
-            type = "字典值";
+var viewDicValue = function (url) {
+    layer.open({
+        title: "字典值",
+        type: 2,
+        area: ["700px", "560px"],
+        fixed: false,
+        content: url,
+        end: function () {
+            $("#table_dictionary_list").bootstrapTable("refresh");
         }
-    } else if (columnName == "status") {
-        if (value == "on") {
-            type = "启用";
-        } else if (value == "off") {
-            type = "禁用";
-        }
-    }
-    return type;
+    });
 };

@@ -1,8 +1,7 @@
 package com.chu.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.chu.dao.UserDAO;
-import com.chu.po.User;
+import com.chu.entity.User;
 import com.chu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<User> list(int limit, int offset, JSONObject params) {
+    public List<User> list(int limit, int offset, User user) {
         PageRequest pageRequest = new PageRequest(offset / limit, limit, Sort.Direction.DESC, "username");
         List<User> userList = userDAO.findAll(pageRequest).getContent();
         return userList;
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public long count(JSONObject params) {
+    public long count(User user) {
         return userDAO.count();
     }
 
