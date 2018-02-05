@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 数据字典Controller类
+ * 数据菜单Controller类
  *
  * @author zhurongzeng
  */
@@ -76,7 +76,7 @@ public class MenuController {
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
-            log.error("保存字典异常！\n", e);
+            log.error("保存菜单异常！\n", e);
         }
         return retMsg;
     }
@@ -98,7 +98,7 @@ public class MenuController {
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
-            log.error("修改字典异常！\n", e);
+            log.error("修改菜单异常！\n", e);
         }
         return retMsg;
     }
@@ -119,7 +119,7 @@ public class MenuController {
         } catch (Exception e) {
             retMsg.setRetCode("9999");
             retMsg.setRetMsg("系统异常");
-            log.error("删除字典异常！\n", e);
+            log.error("删除菜单异常！\n", e);
         }
         return retMsg;
     }
