@@ -2,6 +2,7 @@ package com.chu.entity;
 
 import com.chu.common.po.BasePO;
 import com.chu.common.po.GeneratedUID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,13 +25,12 @@ public class Dictionary extends BasePO {
     private String code;
     private String name;
     private String type;
-//    private String parentId;
     private String status;
     private String remark;
-//    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "parent_id")
-//    private Dictionary parent;
-    @OneToMany(cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
+    @JsonBackReference
+    private Dictionary parent;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     private List<Dictionary> children = new ArrayList<>();
 }

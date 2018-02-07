@@ -1,10 +1,12 @@
 package com.chu.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chu.common.utils.ContextHolderEx;
 import com.chu.common.utils.ReturnMessageUtil;
 import com.chu.common.utils.UpdateUtil;
 import com.chu.dto.ReturnMsg;
 import com.chu.entity.Menu;
+import com.chu.entity.User;
 import com.chu.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,5 +143,18 @@ public class MenuController {
             result.put("valid", true);
         }
         return result;
+    }
+
+    /**
+     * 查询列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/service/menuList", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Menu> menuList() {
+        User user = ContextHolderEx.getUserInfo();
+        List<Menu> allMenus = menuService.getUserMenus(user);
+        return menuService.listMenus(allMenus);
     }
 }

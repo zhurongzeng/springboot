@@ -37,6 +37,8 @@ public class DictionaryController {
         if ("edit".equals(index)) {
             Dictionary dictionary = dictionaryService.getDictionary(id);
             model.addAttribute("dictionary", dictionary);
+        } else if ("subAdd".equals(index)){
+            model.addAttribute("parentId", id);
         }
         return "/dictionary/" + index;
     }
@@ -109,7 +111,7 @@ public class DictionaryController {
      * @param ids
      * @return
      */
-    @RequestMapping(value = "/service/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/service/delete", method = RequestMethod.DELETE)
     @ResponseBody
     public ReturnMsg delete(@RequestBody List<String> ids) {
         ReturnMsg retMsg = new ReturnMsg();

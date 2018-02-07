@@ -34,8 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public List<User> list(int limit, int offset, User user) {
         PageRequest pageRequest = new PageRequest(offset / limit, limit, Sort.Direction.DESC, "username");
-        List<User> userList = userDAO.findAll(pageRequest).getContent();
-        return userList;
+        return userDAO.findAll(pageRequest).getContent();
     }
 
     @Override
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     @Transactional
-    public User save(User user) throws Exception {
+    public User save(User user) {
         return userDAO.save(user);
     }
 
@@ -56,7 +55,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     @Transactional
-    public long delete(List<String> ids) throws Exception {
+    public long delete(List<String> ids) {
         List<User> userList = new ArrayList<>();
         for (String id : ids) {
             User user = new User();

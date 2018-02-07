@@ -80,11 +80,10 @@ CREATE TABLE `t_dictionary` (
 
 /*Data for the table `t_dictionary` */
 
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('0','root','根节点','0',NULL,'on',NULL,'chu','2018-02-01 16:35:14','chu','2018-02-01 16:35:14');
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('1','1','男','2','cx8aARwdZDV0rl7M37W1RK','on',NULL,NULL,NULL,NULL,NULL);
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('2','2','女','2','cx8aARwdZDV0rl7M37W1RK','on',NULL,NULL,NULL,NULL,NULL);
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('cx8aARwdZDV0rl7M37W1RK','gender','性别','1','0','on',NULL,'chu','2018-02-01 16:00:21','chu','2018-02-01 16:00:21');
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('epLB3uBKd224gSK7vvixC9','yesno','是否','1','0','on',NULL,'chu','2018-02-01 16:35:14','chu','2018-02-01 16:35:14');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('btM2VPtxYFA6cHM5UuKp1B','1','男','2','cx8aARwdZDV0rl7M37W1RK','on','','chu','2018-02-07 18:07:02','chu','2018-02-07 18:07:02');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('cx8aARwdZDV0rl7M37W1RK','gender','性别','1',NULL,'on',NULL,'chu','2018-02-01 16:00:21','chu','2018-02-01 16:00:21');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('epLB3uBKd224gSK7vvixC9','yesno','是否','1',NULL,'on',NULL,'chu','2018-02-01 16:35:14','chu','2018-02-01 16:35:14');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('eXdqYKDpk2tbLDs9ME71se','0','女','2','cx8aARwdZDV0rl7M37W1RK','on','','chu','2018-02-07 18:07:26','chu','2018-02-07 18:07:26');
 
 /*Table structure for table `t_menu` */
 
@@ -96,7 +95,7 @@ CREATE TABLE `t_menu` (
   `parent_id` varchar(50) DEFAULT NULL COMMENT '上级ID',
   `level_num` int(11) DEFAULT NULL COMMENT '菜单级别',
   `icon` varchar(50) DEFAULT NULL COMMENT '图标',
-  `path` varchar(100) DEFAULT NULL COMMENT '菜单路径',
+  `url` varchar(100) DEFAULT NULL COMMENT '菜单路径',
   `status` varchar(5) DEFAULT NULL COMMENT '菜单状态（off:禁用 on:启用）',
   `order_num` int(11) DEFAULT NULL COMMENT '排序号',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
@@ -108,6 +107,15 @@ CREATE TABLE `t_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_menu` */
+
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('1','系统管理',NULL,1,'fa fa-gears',NULL,'on',1,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('11','用户管理','1',2,'fa fa-user','/user/view/list','on',1,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('12','角色管理','1',2,'fa fa-tag','/user/view/add','on',2,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('13','字典配置','1',2,'fa fa-book','/dictionary/view/list','on',3,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('14','系统配置','1',2,'fa fa-gear','/user/view/add','on',4,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('15','菜单配置','1',2,'fa fa-list','/user/view/add','on',5,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('2','Test',NULL,1,'fa fa-book',NULL,'on',2,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_menu`(`id`,`name`,`parent_id`,`level_num`,`icon`,`url`,`status`,`order_num`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('21','test','2',2,'fa fa-gear','/user/view/add','on',1,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `t_role` */
 
@@ -128,6 +136,25 @@ CREATE TABLE `t_role` (
 insert  into `t_role`(`id`,`name`,`create_user`,`create_date`,`update_user`,`update_date`) values ('1','ROLE_READER',NULL,NULL,NULL,NULL);
 insert  into `t_role`(`id`,`name`,`create_user`,`create_date`,`update_user`,`update_date`) values ('2','ROLE_ACTUATOR',NULL,NULL,NULL,NULL);
 insert  into `t_role`(`id`,`name`,`create_user`,`create_date`,`update_user`,`update_date`) values ('3','ROLE_ADMIN',NULL,NULL,NULL,NULL);
+
+/*Table structure for table `t_role_menu` */
+
+DROP TABLE IF EXISTS `t_role_menu`;
+
+CREATE TABLE `t_role_menu` (
+  `role_id` varchar(50) DEFAULT NULL COMMENT '角色ID',
+  `menu_id` varchar(50) DEFAULT NULL COMMENT '菜单ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `t_role_menu` */
+
+insert  into `t_role_menu`(`role_id`,`menu_id`) values ('1','11');
+insert  into `t_role_menu`(`role_id`,`menu_id`) values ('3','11');
+insert  into `t_role_menu`(`role_id`,`menu_id`) values ('3','12');
+insert  into `t_role_menu`(`role_id`,`menu_id`) values ('3','13');
+insert  into `t_role_menu`(`role_id`,`menu_id`) values ('3','14');
+insert  into `t_role_menu`(`role_id`,`menu_id`) values ('3','15');
+insert  into `t_role_menu`(`role_id`,`menu_id`) values ('3','21');
 
 /*Table structure for table `t_user` */
 
@@ -163,7 +190,7 @@ CREATE TABLE `t_user` (
 /*Data for the table `t_user` */
 
 insert  into `t_user`(`id`,`username`,`password`,`fullname`,`cert_type`,`cert_id`,`birthday`,`gender`,`phone`,`mail_address`,`address`,`type`,`level`,`qq_no`,`wx_no`,`remark`,`biz_str1`,`biz_str2`,`biz_str3`,`create_user`,`create_date`,`update_user`,`update_date`) values ('1','chu','$2a$10$ySzfir3U8/Wkm4jyBX0Uculmnxc2ufwiS158s9x.TsivbWLGy.4JC','Zachary Chu','','',NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-insert  into `t_user`(`id`,`username`,`password`,`fullname`,`cert_type`,`cert_id`,`birthday`,`gender`,`phone`,`mail_address`,`address`,`type`,`level`,`qq_no`,`wx_no`,`remark`,`biz_str1`,`biz_str2`,`biz_str3`,`create_user`,`create_date`,`update_user`,`update_date`) values ('60','zhurongzeng','$2a$10$Kblu0AnfEc.sIuZbHmKb/udVP6q7K08qKZi/1BLA1zzZvsP02yzMK','朱荣增2','','',NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `t_user`(`id`,`username`,`password`,`fullname`,`cert_type`,`cert_id`,`birthday`,`gender`,`phone`,`mail_address`,`address`,`type`,`level`,`qq_no`,`wx_no`,`remark`,`biz_str1`,`biz_str2`,`biz_str3`,`create_user`,`create_date`,`update_user`,`update_date`) values ('60','zhurongzeng','$2a$10$Kblu0AnfEc.sIuZbHmKb/udVP6q7K08qKZi/1BLA1zzZvsP02yzMK','朱荣增','','',NULL,NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'chu','2018-02-06 18:18:01');
 
 /*Table structure for table `t_user_role` */
 
@@ -180,8 +207,6 @@ insert  into `t_user_role`(`user_id`,`role_id`) values ('1','1');
 insert  into `t_user_role`(`user_id`,`role_id`) values ('1','2');
 insert  into `t_user_role`(`user_id`,`role_id`) values ('1','3');
 insert  into `t_user_role`(`user_id`,`role_id`) values ('60','1');
-insert  into `t_user_role`(`user_id`,`role_id`) values ('60','2');
-insert  into `t_user_role`(`user_id`,`role_id`) values ('60','3');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

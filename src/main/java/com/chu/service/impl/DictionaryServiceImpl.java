@@ -33,24 +33,13 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public List<Dictionary> list(int limit, int offset, Dictionary dictionary) {
         PageRequest pageRequest = new PageRequest(offset / limit, limit, Sort.Direction.DESC, "updateDate");
-        Page page = dictionaryDAO.findAll(new Specification<Dictionary>() {
-            @Override
-            public Predicate toPredicate(Root<Dictionary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                return getPredicate(root, cb, dictionary);
-            }
-        }, pageRequest);
-        List<Dictionary> list = page.getContent();
+        Page<Dictionary> page = dictionaryDAO.findAll((root, query, cb) -> getPredicate(root, cb, dictionary), pageRequest);
         return page.getContent();
     }
 
     @Override
     public long count(Dictionary dictionary) {
-        return dictionaryDAO.count(new Specification<Dictionary>() {
-            @Override
-            public Predicate toPredicate(Root<Dictionary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                return getPredicate(root, cb, dictionary);
-            }
-        });
+        return dictionaryDAO.count((root, query, cb) -> getPredicate(root, cb, dictionary));
     }
 
     @Override
@@ -75,24 +64,34 @@ public class DictionaryServiceImpl implements DictionaryService {
         return dictionaryDAO.findByCode(code);
     }
 
-    public Predicate getPredicate(Root<Dictionary> root, CriteriaBuilder cb, Dictionary dictionary) {
-        List<Predicate> list = new ArrayList<Predicate>();
+    /**
+     * 生成查询条件
+     *
+     * @param root
+     * @param cb
+     * @param dictionary
+     * @return
+     */
+    private Predicate getPredicate(Root<Dictionary> root, CriteriaBuilder cb, Dictionary dictionary) {
+        List<Predicate> list = new ArrayList<>();
 
-        if (StringUtils.isNotEmpty(dictionary.getName())) {
+        if (StringUtils.isNotBlank(dictionary.getName())) {
             list.add(cb.like(root.get("name").as(String.class), "%" + dictionary.getName() + "%"));
         }
 
-        if (StringUtils.isNotEmpty(dictionary.getCode())) {
+        if (StringUtils.isNotBlank(dictionary.getCode())) {
             list.add(cb.like(root.get("code").as(String.class), "%" + dictionary.getCode() + "%"));
         }
 
-//        if (StringUtils.isNotEmpty(dictionary.getParentId())) {
+//        if (StringUtils.isNotBlank(dictionary.getParentId())) {
 //            list.add(cb.equal(root.get("parentId").as(String.class), dictionary.getParentId()));
 //        }
 
-        if (StringUtils.isNotEmpty(dictionary.getType())) {
+        if (StringUtils.isNotBlank(dictionary.getType())) {
             list.add(cb.equal(root.get("type").as(String.class), dictionary.getType()));
         }
+
+        list.add(cb.equal(root.get("status").as(String.class), "on"));
 
         Predicate[] p = new Predicate[list.size()];
         return cb.and(list.toArray(p));

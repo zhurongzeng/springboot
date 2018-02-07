@@ -15,6 +15,7 @@ $(function () {
 /*************** 全局变量 start ******************/
 var addViewPath = "/dictionary/view/add";
 var editViewPath = "/dictionary/view/edit";
+var subAddViewPath = "/dictionary/view/subAdd";
 
 var pagePath = "/dictionary/service/list";
 var addSavePath = "/dictionary/service/add";
@@ -98,18 +99,6 @@ var TableInit = function () {
         });
     };
 
-    oTableInit.InitOperation = function operateFormatter(value, row, index) {
-        return [
-            '<button type="button" class="dicValue btn btn-primary btn-xs" style="margin:0 5px;">添加下级</button>'
-        ].join('');
-    };
-
-    oTableInit.InitEvents = {
-        'click .dicValue': function (e, value, row, index) {
-            viewDicValue(addViewPath);
-        }
-    };
-
     //初始化子表格(无限循环)
     oTableInit.InitSubTable = function (index, row, $detail) {
         var subTable = $detail.html('<table></table>').find('table');
@@ -151,12 +140,36 @@ var TableInit = function () {
             }, {
                 field: "remark",
                 title: "备注"
+            }, {
+                field: 'operation',
+                title: '操作',
+                events: oTableInit.InitEvents,
+                formatter: oTableInit.InitOperation
             }],
             onExpandRow: function (index, row, $Subdetail) {
                 oTableInit.InitSubTable(index, row, $Subdetail);
             }
         });
     };
+
+    oTableInit.InitOperation = function operateFormatter(value, row, index) {
+        var buttons = [];
+        if (row.type === '1') {
+            buttons.push('<button type="button" class="subAdd btn btn-primary btn-xs" style="margin:0 5px;">添加下级</button>');
+        }
+        buttons.push('<button type="button" class="edit btn btn-primary btn-xs" style="margin:0 5px;">编辑</button>');
+        return buttons.join('');
+    };
+
+    oTableInit.InitEvents = {
+        'click .subAdd': function (e, value, row, index) {
+            subAdd(subAddViewPath, row.id);
+        },
+        'click .edit': function (e, value, row, index) {
+            subAdd(subAddViewPath, row.id);
+        }
+    };
+
     return oTableInit;
 };
 
@@ -233,6 +246,8 @@ var FormInit = function () {
                 addSave();
             } else if (formId === "form_edit_dictionary") {
                 editSave();
+            } else if (formId === "form_subadd_dictionary") {
+                subAddSave();
             }
         });
     };
@@ -342,7 +357,7 @@ var remove = function (url) {
         function (index) {
             $.ajax({
                 url: url,
-                method: "post",
+                method: "delete",
                 dataType: "json",
                 contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify(ids),
@@ -359,15 +374,35 @@ var remove = function (url) {
         });
 };
 
-var viewDicValue = function (url) {
+var subAdd = function (url, id) {
     layer.open({
         title: "字典值",
         type: 2,
-        area: ["700px", "560px"],
+        area: ["550px", "560px"],
         fixed: false,
-        content: url,
+        content: url + "?id=" + id,
         end: function () {
             $("#table_dictionary_list").bootstrapTable("refresh");
+        }
+    });
+};
+
+/**
+ * 保存下级
+ */
+var subAddSave = function () {
+    $.ajax({
+        type: "post",
+        url: addSavePath,
+        data: $("#form_subadd_dictionary").serialize(),
+        success: function (data) {
+            if (data.retCode === "0000") {
+                layer.alert("保存成功", {icon: 1}, function () {
+                    parent.layer.closeAll();
+                });
+            } else {
+                layer.alert("保存失败", {icon: 2});
+            }
         }
     });
 };

@@ -3,6 +3,7 @@ package com.chu.entity;
 import com.chu.common.po.BasePO;
 import com.chu.common.po.GeneratedUID;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "t_user")
+@ToString(callSuper = true)
 public class User extends BasePO implements UserDetails {
     private static final long serialVersionUID = 1L;
 

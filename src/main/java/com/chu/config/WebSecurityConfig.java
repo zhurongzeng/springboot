@@ -27,7 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable();
         http.authorizeRequests()
-                .antMatchers("/user/**").hasRole("ADMIN") // 按顺序生效
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login")// 设置登录表单的路径

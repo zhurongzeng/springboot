@@ -1,6 +1,7 @@
 package com.chu.service;
 
 import com.chu.entity.Menu;
+import com.chu.entity.User;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
 public interface MenuService {
     Menu getMenu(String id);
 
+    List<Menu> list(Menu menu);
+
     List<Menu> list(int limit, int offset, Menu menu);
 
     long count(Menu menu);
@@ -17,4 +20,8 @@ public interface MenuService {
     Menu save(Menu menu);
 
     long delete(List<String> ids);
+
+    List<Menu> listMenus(List<Menu> menuList);
+
+    List<Menu> getUserMenus(User user);
 }

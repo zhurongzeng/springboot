@@ -2,7 +2,10 @@ package com.chu.entity;
 
 import com.chu.common.po.BasePO;
 import com.chu.common.po.GeneratedUID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,19 +20,23 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "t_menu")
+@ToString(exclude = {"children"})
+@EqualsAndHashCode(exclude = {"parent"})
 public class Menu extends BasePO {
     @Id
     @GeneratedUID
     private String id;
     private String name;
-    //    private String parentId;
     private int levelNum;
     private String icon;
-    private String path;
+    private String url;
     private String status;
     private int orderNum;
     private String remark;
-    @OneToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
-    private List<Menu> subMenus = new ArrayList<>();
+    @JsonBackReference
+    private Menu parent;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
+    private List<Menu> children = new ArrayList<>();
 }

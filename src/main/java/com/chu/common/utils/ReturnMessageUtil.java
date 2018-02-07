@@ -10,12 +10,12 @@ import com.chu.dto.ReturnMsg;
  **/
 
 public class ReturnMessageUtil {
-    public static ReturnMsg returnMessage(boolean isSuccess, Object object) {
+    public static ReturnMsg returnMessage(boolean isSuccess, Object data) {
         ReturnMsg retMsg = new ReturnMsg();
         if (isSuccess) {
             retMsg.setRetCode("0000");
             retMsg.setRetMsg("操作成功");
-            retMsg.setRetData(object);
+            retMsg.setRetData(data);
         } else {
             retMsg.setRetCode("0001");
             retMsg.setRetMsg("操作失败");
