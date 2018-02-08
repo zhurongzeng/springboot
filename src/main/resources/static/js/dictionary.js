@@ -6,10 +6,6 @@ $(function () {
     //2.初始化Button的点击事件
     var oButtonInit = new ButtonInit();
     oButtonInit.Init();
-
-    //3.初始化Form
-    var oFormInit = new FormInit();
-    oFormInit.Init();
 });
 
 /*************** 全局变量 start ******************/
@@ -53,12 +49,12 @@ var TableInit = function () {
                 queryParams = {
                     code: $("#txt_query_code").val(),
                     name: $("#txt_query_name").val(),
-                    type: "1"
+                    parent: {id: "null"}
                 };
                 return {
                     limit: params.limit,
                     offset: params.offset,
-                    queryParams: JSON.stringify(queryParams)
+                    paramJson: JSON.stringify(queryParams)
                 };
             },
             columns: [{
@@ -94,7 +90,9 @@ var TableInit = function () {
                 formatter: oTableInit.InitOperation
             }],
             onExpandRow: function (index, row, $detail) {
-                oTableInit.InitSubTable(index, row, $detail);
+                if (row.children.length > 0) {
+                    oTableInit.InitSubTable(index, row, $detail);
+                }
             }
         });
     };
@@ -147,7 +145,9 @@ var TableInit = function () {
                 formatter: oTableInit.InitOperation
             }],
             onExpandRow: function (index, row, $Subdetail) {
-                oTableInit.InitSubTable(index, row, $Subdetail);
+                if (row.children.length > 0) {
+                    oTableInit.InitSubTable(index, row, $Subdetail);
+                }
             }
         });
     };
@@ -193,66 +193,6 @@ var ButtonInit = function () {
     };
     return oInit;
 };
-
-/**
- * 表单初始化
- */
-var FormInit = function () {
-    var oInit = {};
-    oInit.Init = function () {
-        $("form").bootstrapValidator({
-            live: "enabled",
-            message: "信息校验失败",
-            feedbackIcons: {
-                valid: "glyphicon glyphicon-ok",
-                invalid: "glyphicon glyphicon-remove",
-                validating: "glyphicon glyphicon-refresh"
-            },
-            fields: {
-                name: {
-                    message: "字典名称校验失败",
-                    validators: {
-                        notEmpty: {
-                            message: "字典名称不能为空"
-                        }
-                    }
-                },
-                code: {
-                    message: "字典编码校验失败",
-                    validators: {
-                        notEmpty: {
-                            message: "字典编码不能为空"
-                        },
-                        regexp: {
-                            regexp: /^[a-zA-Z0-9_.]+$/,
-                            message: "字典编码只能由字母，数字，点和下划线组成"
-                        },
-                        remote: {
-                            delay: 1000,
-                            type: "POST",
-                            url: checkValidPath,
-                            message: "字典编码已存在"
-                        }
-                    }
-                }
-            }
-        }).on("click", "[type=submit]", function (e) {
-            // 编辑时取消编码校验
-            $("#form_edit_dictionary").bootstrapValidator("enableFieldValidators", "code", false);
-        }).on("success.form.bv", function (e) {
-            e.preventDefault();
-            var formId = e.target.getAttribute("id");
-            if (formId === "form_add_dictionary") {
-                addSave();
-            } else if (formId === "form_edit_dictionary") {
-                editSave();
-            } else if (formId === "form_subadd_dictionary") {
-                subAddSave();
-            }
-        });
-    };
-    return oInit;
-}
 
 /**
  * 新增用户
@@ -374,6 +314,11 @@ var remove = function (url) {
         });
 };
 
+/**
+ * 添加下级
+ * @param url
+ * @param id
+ */
 var subAdd = function (url, id) {
     layer.open({
         title: "字典值",

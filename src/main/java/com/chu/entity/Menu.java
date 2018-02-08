@@ -33,10 +33,10 @@ public class Menu extends BasePO {
     private String status;
     private int orderNum;
     private String remark;
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     @JsonBackReference
     private Menu parent;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "parent")
     private List<Menu> children = new ArrayList<>();
 }

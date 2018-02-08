@@ -18,5 +18,5 @@ public interface DictionaryService {
 
     long delete(List<String> ids);
 
-    Dictionary getByDicCode(String code);
+    List<Dictionary> list(Dictionary dictionary);
 }

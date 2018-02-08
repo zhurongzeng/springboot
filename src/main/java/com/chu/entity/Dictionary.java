@@ -4,6 +4,8 @@ import com.chu.common.po.BasePO;
 import com.chu.common.po.GeneratedUID;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "t_dictionary")
+@ToString(exclude = {"children"})
+@EqualsAndHashCode(exclude = {"parent"})
 public class Dictionary extends BasePO {
     @Id
     @GeneratedUID
@@ -31,6 +35,6 @@ public class Dictionary extends BasePO {
     @JoinColumn(name = "parent_id")
     @JsonBackReference
     private Dictionary parent;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "parent")
     private List<Dictionary> children = new ArrayList<>();
 }

@@ -3,6 +3,54 @@
 <head th:include="common::header"></head>
 <head>
     <script type="text/javascript" th:src="@{/js/dictionary.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#form_add_dictionary").bootstrapValidator({
+                live: "enabled",
+                message: "信息校验失败",
+                feedbackIcons: {
+                    valid: "glyphicon glyphicon-ok",
+                    invalid: "glyphicon glyphicon-remove",
+                    validating: "glyphicon glyphicon-refresh"
+                },
+                fields: {
+                    name: {
+                        message: "字典名称校验失败",
+                        validators: {
+                            notEmpty: {
+                                message: "字典名称不能为空"
+                            }
+                        }
+                    },
+                    code: {
+                        message: "字典编码校验失败",
+                        validators: {
+                            notEmpty: {
+                                message: "字典编码不能为空"
+                            },
+                            regexp: {
+                                regexp: /^[a-zA-Z0-9_.]+$/,
+                                message: "字典编码只能由字母，数字，点和下划线组成"
+                            },
+                            remote: {
+                                delay: 1000,
+                                type: "GET",
+                                url: checkValidPath,
+                                data: {
+                                    type: '1',
+                                    parentId: 'null'
+                                },
+                                message: "字典编码已存在"
+                            }
+                        }
+                    }
+                }
+            }).on("success.form.bv", function (e) {
+                e.preventDefault();
+                addSave();
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="container-fluid">

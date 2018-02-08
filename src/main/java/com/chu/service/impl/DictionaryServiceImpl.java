@@ -9,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
@@ -60,8 +58,8 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public Dictionary getByDicCode(String code) {
-        return dictionaryDAO.findByCode(code);
+    public List<Dictionary> list(Dictionary dictionary) {
+        return dictionaryDAO.findAll(((root, query, cb) -> getPredicate(root, cb, dictionary)));
     }
 
     /**
@@ -83,15 +81,22 @@ public class DictionaryServiceImpl implements DictionaryService {
             list.add(cb.like(root.get("code").as(String.class), "%" + dictionary.getCode() + "%"));
         }
 
-//        if (StringUtils.isNotBlank(dictionary.getParentId())) {
-//            list.add(cb.equal(root.get("parentId").as(String.class), dictionary.getParentId()));
-//        }
-
         if (StringUtils.isNotBlank(dictionary.getType())) {
             list.add(cb.equal(root.get("type").as(String.class), dictionary.getType()));
         }
 
         list.add(cb.equal(root.get("status").as(String.class), "on"));
+
+        if (dictionary.getParent() != null) {
+            String parentId = dictionary.getParent().getId();
+            if (StringUtils.isNotBlank(parentId)) {
+                if ("null".equals(parentId)) {
+                    list.add(cb.isNull(root.get("parent").as(Dictionary.class)));
+                } else {
+                    list.add(cb.equal(root.join("parent").get("id").as(String.class), dictionary.getParent().getId()));
+                }
+            }
+        }
 
         Predicate[] p = new Predicate[list.size()];
         return cb.and(list.toArray(p));

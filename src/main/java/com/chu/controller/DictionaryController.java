@@ -7,6 +7,7 @@ import com.chu.dto.ReturnMsg;
 import com.chu.entity.Dictionary;
 import com.chu.service.DictionaryService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,7 @@ public class DictionaryController {
         if ("edit".equals(index)) {
             Dictionary dictionary = dictionaryService.getDictionary(id);
             model.addAttribute("dictionary", dictionary);
-        } else if ("subAdd".equals(index)){
+        } else if ("subAdd".equals(index)) {
             model.addAttribute("parentId", id);
         }
         return "/dictionary/" + index;
@@ -48,14 +49,14 @@ public class DictionaryController {
      *
      * @param limit
      * @param offset
-     * @param queryParams
+     * @param paramJson
      * @return
      */
     @RequestMapping(value = "/service/list", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject list(int limit, int offset, String queryParams) {
+    public JSONObject list(int limit, int offset, String paramJson) {
         JSONObject result = new JSONObject();
-        Dictionary dictionary = JSONObject.parseObject(queryParams, Dictionary.class);
+        Dictionary dictionary = JSONObject.parseObject(paramJson, Dictionary.class);
         List<Dictionary> dictionaryList = dictionaryService.list(limit, offset, dictionary);
         long count = dictionaryService.count(dictionary);
         result.put("total", count);
@@ -129,19 +130,38 @@ public class DictionaryController {
     /**
      * 校验
      *
-     * @param code
      * @return
      */
-    @RequestMapping(value = "/service/validate", method = RequestMethod.POST)
+    @RequestMapping(value = "/service/validate", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject validate(@RequestParam String code) {
+    public JSONObject validate(String id, String code, String type, String parentId) {
         JSONObject result = new JSONObject();
-        Dictionary dictionary = dictionaryService.getByDicCode(code);
-        if (dictionary != null) {
-            result.put("valid", false);
-        } else {
-            result.put("valid", true);
+        Dictionary dictionary = new Dictionary();
+        dictionary.setCode(code);
+        dictionary.setType(type);
+        if (StringUtils.isNotBlank(parentId)) {
+            Dictionary parent = new Dictionary();
+            parent.setId(parentId);
+            dictionary.setParent(parent);
         }
+        List<Dictionary> dicList = dictionaryService.list(dictionary);
+        boolean valid = false;
+        if (dicList != null && dicList.size() > 0) {
+            // id不为空是修改，不是新增
+            if (StringUtils.isNotBlank(id)) {
+                for (Dictionary dic : dicList) {
+                    valid = true;
+                    // 如果存在不是自身的记录，不合法
+                    if (!id.equals(dic.getId())) {
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+        } else {
+            valid = true;
+        }
+        result.put("valid", valid);
         return result;
     }
 }
