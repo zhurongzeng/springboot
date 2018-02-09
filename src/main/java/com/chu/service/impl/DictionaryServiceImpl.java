@@ -78,14 +78,16 @@ public class DictionaryServiceImpl implements DictionaryService {
         }
 
         if (StringUtils.isNotBlank(dictionary.getCode())) {
-            list.add(cb.like(root.get("code").as(String.class), "%" + dictionary.getCode() + "%"));
+            list.add(cb.equal(root.get("code").as(String.class), dictionary.getCode()));
         }
 
         if (StringUtils.isNotBlank(dictionary.getType())) {
             list.add(cb.equal(root.get("type").as(String.class), dictionary.getType()));
         }
 
-        list.add(cb.equal(root.get("status").as(String.class), "on"));
+        if (StringUtils.isNotBlank(dictionary.getStatus())) {
+            list.add(cb.equal(root.get("status").as(String.class), dictionary.getStatus()));
+        }
 
         if (dictionary.getParent() != null) {
             String parentId = dictionary.getParent().getId();

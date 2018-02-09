@@ -17,6 +17,7 @@ var pagePath = "/dictionary/service/list";
 var addSavePath = "/dictionary/service/add";
 var editSavePath = "/dictionary/service/edit";
 var deletePath = "/dictionary/service/delete";
+var singleDeletePath = "/dictionary/service/delete";
 var checkValidPath = "/dictionary/service/validate";
 /*************** 全局变量 end ******************/
 
@@ -157,7 +158,8 @@ var TableInit = function () {
         if (row.type === '1') {
             buttons.push('<button type="button" class="subAdd btn btn-primary btn-xs" style="margin:0 5px;">添加下级</button>');
         }
-        buttons.push('<button type="button" class="edit btn btn-primary btn-xs" style="margin:0 5px;">编辑</button>');
+        buttons.push('<button type="button" class="edit btn btn-warning btn-xs" style="margin:0 5px;">编辑</button>');
+        buttons.push('<button type="button" class="delete btn btn-danger btn-xs" style="margin:0 5px;">删除</button>');
         return buttons.join('');
     };
 
@@ -166,7 +168,10 @@ var TableInit = function () {
             subAdd(subAddViewPath, row.id);
         },
         'click .edit': function (e, value, row, index) {
-            subAdd(subAddViewPath, row.id);
+            subAdd(editViewPath, row.id);
+        },
+        'click .delete': function (e, value, row, index) {
+            remove(deletePath, 1, row.id);
         }
     };
 
@@ -179,6 +184,10 @@ var TableInit = function () {
 var ButtonInit = function () {
     var oInit = {};
     oInit.Init = function () {
+        $("#btn_dictionary_query").click(function () {
+            query();
+        });
+
         $("#btn_dictionary_add").click(function () {
             add(addViewPath);
         });
@@ -194,6 +203,10 @@ var ButtonInit = function () {
     return oInit;
 };
 
+var query = function () {
+    $("#table_dictionary_list").bootstrapTable("refresh");
+}
+
 /**
  * 新增用户
  */
@@ -201,7 +214,7 @@ var add = function (url) {
     layer.open({
         title: "新增",
         type: 2,
-        area: ["550px", "560px"],
+        area: ["550px", "70%"],
         fixed: false,
         content: url,
         end: function () {
@@ -216,6 +229,12 @@ var add = function (url) {
 var addSave = function () {
     // 移除下拉菜单disabled属性
     $("#txt_add_type").removeAttr("disabled");
+    var status = $("#txt_add_status").bootstrapSwitch("state");
+    if (status == true) {
+        $("#txt_add_status").val("1");
+    } else {
+        $("#txt_add_status").val("0");
+    }
     $.ajax({
         type: "post",
         url: addSavePath,
@@ -262,12 +281,20 @@ var edit = function (url) {
  * 保存修改
  */
 var editSave = function () {
-    // 移除下拉菜单disabled属性
-    $("#txt_edit_type").removeAttr("disabled");
+    var status = $("#txt_edit_status").bootstrapSwitch("state");
+    if (status == true) {
+        $("#txt_edit_status").val("1");
+    } else {
+        $("#txt_edit_status").val("0");
+    }
+    var formData = $("#form_edit_dictionary").serialize();
+    if (status == '0') {
+        formData += '&status=0';
+    }
     $.ajax({
         type: "post",
         url: editSavePath,
-        data: $("#form_edit_dictionary").serialize(),
+        data: formData,
         success: function (data) {
             if (data.retCode === "0000") {
                 layer.alert("保存成功", {icon: 1}, function () {
@@ -283,15 +310,19 @@ var editSave = function () {
 /**
  * 删除
  */
-var remove = function (url) {
-    var selections = $("#table_dictionary_list").bootstrapTable("getSelections");
-    if (selections.length === 0) {
-        layer.alert("请至少选择一条记录进行操作!", {icon: 7});
-        return;
-    }
+var remove = function (url, type, id) {
     var ids = [];
-    for (var i = 0; i < selections.length; i++) {
-        ids.push(selections[i].id);
+    if (type === 1) {// 单条删除
+        ids.push(id);
+    } else {// 批量删除
+        var selections = $("#table_dictionary_list").bootstrapTable("getSelections");
+        if (selections.length === 0) {
+            layer.alert("请至少选择一条记录进行操作!", {icon: 7});
+            return;
+        }
+        for (var i = 0; i < selections.length; i++) {
+            ids.push(selections[i].id);
+        }
     }
     layer.confirm("确定要删除吗?", {icon: 3, title: "提示"},
         function (index) {
@@ -336,6 +367,12 @@ var subAdd = function (url, id) {
  * 保存下级
  */
 var subAddSave = function () {
+    var status = $("#txt_subadd_status").bootstrapSwitch("state");
+    if (status == true) {
+        $("#txt_subadd_status").val("1");
+    } else {
+        $("#txt_subadd_status").val("0");
+    }
     $.ajax({
         type: "post",
         url: addSavePath,

@@ -36,7 +36,7 @@ public class DictionaryController {
     @RequestMapping(value = "/view/{index}", method = RequestMethod.GET)
     public String view(@PathVariable("index") String index, String id, Model model) {
         if ("edit".equals(index)) {
-            Dictionary dictionary = dictionaryService.getDictionary(id);
+                Dictionary dictionary = dictionaryService.getDictionary(id);
             model.addAttribute("dictionary", dictionary);
         } else if ("subAdd".equals(index)) {
             model.addAttribute("parentId", id);

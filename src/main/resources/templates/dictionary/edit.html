@@ -59,9 +59,9 @@
         <div class="panel-body">
             <form class="form-horizontal" id="form_edit_dictionary" role="form">
                 <div class="hide form-group">
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control" id="txt_edit_id" name="id" th:value="${dictionary.id}"/>
-                    </div>
+                    <input type="text" class="form-control" id="txt_edit_id" name="id" th:value="${dictionary.id}"/>
+                    <input type="text" class="form-control" id="txt_edit_parentId"
+                           th:value="${dictionary.parent == null}?'null':${dictionary.parent.id}"/>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="txt_edit_name">名称</label>
@@ -93,7 +93,7 @@
                     <label class="col-sm-3 control-label" for="txt_edit_status">状态</label>
                     <div class="col-sm-6">
                         <input type="checkbox" class="form-control toggle-checkbox" id="txt_edit_status" name="status"
-                               checked="checked" data-on-text="启用" data-off-text="禁用" th:value="${dictionary.status}"/>
+                               data-on-text="启用" data-off-text="禁用" th:checked="${dictionary.status=='1'}?'true':'false'"/>
                     </div>
                 </div>
                 <div class="form-group">

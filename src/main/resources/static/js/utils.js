@@ -7,9 +7,9 @@ var dataFormat = function (columnName, value) {
             type = "字典值";
         }
     } else if (columnName == "status") {
-        if (value == "on") {
+        if (value == "1") {
             type = "启用";
-        } else if (value == "off") {
+        } else if (value == "0") {
             type = "禁用";
         }
     }

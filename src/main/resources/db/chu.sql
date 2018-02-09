@@ -67,9 +67,9 @@ CREATE TABLE `t_dictionary` (
   `id` varchar(50) NOT NULL COMMENT '字典ID',
   `code` varchar(20) DEFAULT NULL COMMENT '字典编码',
   `name` varchar(50) DEFAULT NULL COMMENT '字典名称',
-  `type` varchar(2) DEFAULT NULL COMMENT '字典类别（1:字典项 2:字典值）',
+  `type` varchar(10) DEFAULT NULL COMMENT '字典类别（1:字典项 2:字典值）',
   `parent_id` varchar(50) DEFAULT NULL COMMENT '上级ID',
-  `status` varchar(2) DEFAULT NULL COMMENT '字典状态（off:禁用 on:启用）',
+  `status` varchar(10) DEFAULT NULL COMMENT '字典状态（off:禁用 on:启用）',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
@@ -80,10 +80,10 @@ CREATE TABLE `t_dictionary` (
 
 /*Data for the table `t_dictionary` */
 
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('btM2VPtxYFA6cHM5UuKp1B','1','男','2','cx8aARwdZDV0rl7M37W1RK','on','','chu','2018-02-07 18:07:02','chu','2018-02-07 18:07:02');
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('cx8aARwdZDV0rl7M37W1RK','gender','性别','1',NULL,'on',NULL,'chu','2018-02-01 16:00:21','chu','2018-02-01 16:00:21');
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('epLB3uBKd224gSK7vvixC9','yesno','是否','1',NULL,'on',NULL,'chu','2018-02-01 16:35:14','chu','2018-02-01 16:35:14');
-insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('eXdqYKDpk2tbLDs9ME71se','0','女','2','cx8aARwdZDV0rl7M37W1RK','on','','chu','2018-02-07 18:07:26','chu','2018-02-07 18:07:26');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('btM2VPtxYFA6cHM5UuKp1B','1','男','2','cx8aARwdZDV0rl7M37W1RK','1','','chu','2018-02-07 18:07:02','chu','2018-02-07 18:07:02');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('cx8aARwdZDV0rl7M37W1RK','gender','性别','1',NULL,'1','','chu','2018-02-01 16:00:21','chu','2018-02-09 16:42:40');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('d2nzgekGXQt79BenpYU4Uj','sss','sss','1',NULL,'1','','chu','2018-02-09 18:45:17','chu','2018-02-09 19:06:09');
+insert  into `t_dictionary`(`id`,`code`,`name`,`type`,`parent_id`,`status`,`remark`,`create_user`,`create_date`,`update_user`,`update_date`) values ('eXdqYKDpk2tbLDs9ME71se','0','女','2','cx8aARwdZDV0rl7M37W1RK','1','','chu','2018-02-07 18:07:26','chu','2018-02-07 18:07:26');
 
 /*Table structure for table `t_menu` */
 
