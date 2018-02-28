@@ -187,6 +187,27 @@ public class MenuServiceImpl implements MenuService {
         }
         // 对菜单进行排序
         childList.sort(Comparator.comparingInt(Menu::getOrderNum));
+//		childList.sort((Menu m1, Menu m2) -> m1.getOrderNum() - m2.getOrderNum());
         return childList;
     }
+    
+	public List<Menu> filterMenus(List<Menu> menus, java.util.function.Predicate<Menu> p) {
+		List<Menu> resultList = new ArrayList<>();
+		for (Menu menu : menus) {
+			if (p.test(menu)) {
+				resultList.add(menu);
+			}
+		}
+		return resultList;
+	}
+	
+	public void process(Runnable r){
+		r.run();
+	}
+	
+	public static void main(String[] args) {
+		MenuServiceImpl service = new MenuServiceImpl();
+		service.filterMenus(null, (Menu menu) -> menu.getLevelNum() == 1);
+		service.process(() -> System.out.println("ssss"));
+	}
 }
